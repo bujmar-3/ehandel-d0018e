@@ -30,3 +30,20 @@ function connectDb(){
     }
 
 }
+
+function getProducts(){
+    global $servername;
+    global $databasename;
+    global $username;
+    global $password;
+    $conn = new PDO("mysql:host=$servername;dbname=$databasename;", $username, $password);
+    /** Hämta alla produkter från databasen lägg i varibel allProducts */
+    $allProducts = $conn->query("SELECT product.Name, product.Price, product.Amount FROM products");
+    foreach ($allProducts as $row){
+        print $row[Name] . "\t";
+        print $row[Price] . "\t";
+        print $row[Amounts] . "\t";
+    }
+
+
+}

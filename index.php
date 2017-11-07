@@ -12,6 +12,7 @@
     <h3>Kyckling med brunsås</h3>
     <?php
     connectDb();
+    getProducts();
     ?>
 </body>
 </html>
