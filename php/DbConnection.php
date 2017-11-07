@@ -37,13 +37,14 @@ function getProducts(){
     global $username;
     global $password;
     $conn = new PDO("mysql:host=$servername;dbname=$databasename;", $username, $password);
-    $prepState = $conn->prepare("SELECT Name, Price, Amount FROM products");
+    $prepState = $conn->prepare("SELECT Name, Price, Amount FROM product");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     foreach ($fetchedData as $row){
-        print $row[Name] . "\t";
-        print $row[Price] . "\t";
-        print $row[Amount] . "\t";
+        echo $row['Name'] . "<br />";
+        echo $row['Price'] . "<br />";
+        echo $row['Amount'] . "<br />";
+        echo "Här över ska data komma";
     }
 
 
