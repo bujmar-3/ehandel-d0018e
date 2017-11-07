@@ -37,12 +37,13 @@ function getProducts(){
     global $username;
     global $password;
     $conn = new PDO("mysql:host=$servername;dbname=$databasename;", $username, $password);
-    /** Hämta alla produkter från databasen lägg i varibel allProducts */
-    $allProducts = $conn->query("SELECT product.Name, product.Price, product.Amount FROM products");
-    foreach ($allProducts as $row){
+    $prepState = $conn->prepare("SELECT Name, Price, Amount FROM products");
+    $prepState->execute();
+    $fetchedData = $prepState->fetchAll();
+    foreach ($fetchedData as $row){
         print $row[Name] . "\t";
         print $row[Price] . "\t";
-        print $row[Amounts] . "\t";
+        print $row[Amount] . "\t";
     }
 
 
