@@ -9,5 +9,6 @@
     <h2>Moos! massa mos! MERA MOS!</h2>
     <h3>Köttebullar med äppelmos</h3>
     <h3>Kyckling med brunsås</h3>
+    <?php include 'php/DbConnection.php'; ?>
 </body>
 </html>
