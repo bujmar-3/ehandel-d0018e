@@ -11,7 +11,7 @@ $servername = "localhost";
 $username = "ehandelUser";
 $password = "mubbhandel";
 $port = "3306";
-$databasename = "ehandeldb";
+$databasename = "ehandel_db";
 
 function connectDb(){
     global $servername;
