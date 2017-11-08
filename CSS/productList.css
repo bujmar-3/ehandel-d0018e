@@ -1,0 +1,25 @@
+#productList{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+/* Tabell-huvud specefikt för productList */
+#productList th{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 8;
+    text-align: left;
+    background-color: #3399ff;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#productList tr:nth-child(even){background-color: #99ccff;}
+
+#productList td{
+    padding: 8;
+}
