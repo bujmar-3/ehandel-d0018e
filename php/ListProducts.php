@@ -8,6 +8,7 @@ Function ListProducts ($fetchedData){
     echo        '<th>Price</th>';
     echo        '<th>Amount</th>';
     echo    '</tr>';
+    echo '</table>';
 
 foreach ($fetchedData as $row)
     {
@@ -21,8 +22,4 @@ foreach ($fetchedData as $row)
 
     }
 }
-echo '</table>';
-
-echo '</body>';
-echo '</html>';
 ?>
