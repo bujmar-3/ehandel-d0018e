@@ -32,17 +32,18 @@ function connectDb(){
     }
 
 }
-
+/** Returnerar variabel $fechedData som inehåller namn, pris och antal från tabellen product från databasen */
 function getProducts(){
     $conn = connectDb();
     $prepState = $conn->prepare("SELECT Name, Price, Amount FROM product");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
-    foreach ($fetchedData as $row){
+    return $fetchedData;
+    /**foreach ($fetchedData as $row){
         echo $row['Name'] . "<br />";
         echo $row['Price'] . "<br />";
         echo $row['Amount'] . "<br />";
-        echo "Här över ska data komma";
+        echo "Här över ska data komma";*/
     }
 
 
