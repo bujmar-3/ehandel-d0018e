@@ -23,7 +23,6 @@ function connectDb(){
         $conn = new PDO("mysql:host=$servername;dbname=$databasename;", $username, $password);
         /** Sätter PDOs error mode till exception */
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        echo "db uppkoppling lyckades"; /** check code*/
         return $conn;
     }
     /** Fångar exception och skriver ut error medelande */

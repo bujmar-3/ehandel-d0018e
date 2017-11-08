@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="css/productList.css">
     <title>Test Site</title>
     <?php include 'php/DbConnection.php'; ?>
-    <?php include 'php/test.php'; ?>
+    <?php include 'php/ListProducts.php'; ?>
 </head>
 <body>
     <?php
