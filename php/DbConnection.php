@@ -13,6 +13,7 @@ $password = "mubbhandel";
 $port = "3306";
 $databasename = "ehandel_db";
 
+/** Tar gobala variabler definerade i början av denna fil och skapar en uppkoppling*/
 function connectDb(){
     global $servername;
     global $databasename;
@@ -23,6 +24,7 @@ function connectDb(){
         /** Sätter PDOs error mode till exception */
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         echo "db uppkoppling lyckades"; /** check code*/
+        return $conn;
     }
     /** Fångar exception och skriver ut error medelande */
     catch (PDOException $e){
@@ -32,11 +34,7 @@ function connectDb(){
 }
 
 function getProducts(){
-    global $servername;
-    global $databasename;
-    global $username;
-    global $password;
-    $conn = new PDO("mysql:host=$servername;dbname=$databasename;", $username, $password);
+    $conn = connectDb();
     $prepState = $conn->prepare("SELECT Name, Price, Amount FROM product");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
