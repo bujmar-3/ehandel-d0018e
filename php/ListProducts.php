@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="">
+    <link rel="stylesheet" type="text/css" href="../CSS/productList.css">
     <meta charset="UTF-8">
 </head>
 <body>
 
-<table>
+<table id="productList" border="1px solid black">
     <tr>
     <th>Name</th>
     <th>Price</th>
@@ -17,9 +17,10 @@ Function ListProducts ($fetchedData){
 foreach ($fetchedData as $row){
 ?>
     <tr>
-    <td><?php echo $row['Name'] . "<br />";?> </td>
-    <td><?php echo $row['Price'] . "<br />";?> </td>
-    <td><?php echo $row['Amount'] . "<br />";?> </td>
+    <td><?php echo $row['Name']?> </td>
+    <td><?php echo $row['Price']?> </td>
+    <td><?php echo $row['Amount']?> </td>
+        </br>
     </tr>
 <?php } ?>
 <?php } ?>

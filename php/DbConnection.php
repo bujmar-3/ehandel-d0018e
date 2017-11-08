@@ -45,6 +45,3 @@ function getProducts(){
         echo $row['Amount'] . "<br />";
         echo "Här över ska data komma";*/
     }
-
-
-}
