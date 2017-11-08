@@ -1,32 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" type="text/css" href="../css/productList.css">
-    <meta charset="UTF-8">
-</head>
-<body>
-
-<table id="productList" border="1px solid black">
-    <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Amount</th>
-    </tr>
 <?php
 
 Function ListProducts ($fetchedData){
-foreach ($fetchedData as $row){
+
+    echo '<table id="productList" border="1px solid black">';
+    echo    '<tr>';
+    echo        '<th>Name</th>';
+    echo        '<th>Price</th>';
+    echo        '<th>Amount</th>';
+    echo    '</tr>';
+
+foreach ($fetchedData as $row)
+    {
+
+    echo    '<tr>';
+    echo        '<td>'. $row['Name'] .'</td>';
+    echo        '<td>'. $row['Price'] .'</td>';
+    echo        '<td>'. $row['Amount'] .'</td>';
+    echo        '</br>';
+    echo    '</tr>';
+
+    }
+}
+echo '</table>';
+
+echo '</body>';
+echo '</html>';
 ?>
-    <tr>
-        <td><?php echo $row['Name']?> </td>
-        <td><?php echo $row['Price']?> </td>
-        <td><?php echo $row['Amount']?> </td>
-        </br>
-    </tr>
-<?php } ?>
-<?php } ?>
-
-</table>
-
-</body>
-</html>
