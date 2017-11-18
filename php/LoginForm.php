@@ -8,7 +8,7 @@
 
 /** getLoginForm skapar ett login fomrulär, bundet till index.php vid submit*/
 function getLoginForm(){
-    setSessionLoggin();
+    checkLoginPost();
     /** Om ej inloggad visa formulär*/
     if(checkLoggedIn()==false){
         echo '
@@ -20,12 +20,13 @@ function getLoginForm(){
     }
     else{
         $name = $_SESSION["username"];
-        echo 'inloggad som ' . $name;
+        $id = $_SESSION["userid"];
+        echo 'inloggad som ' . $name . ' UserID ' . $id;
     }
 }
 /** Kollar om sessionen inehåller användardata, retunerar true eller false*/
 function checkLoggedIn(){
-    if(isset($_SESSION["username"])&&isset($_SESSION["password"])){
+    if(isset($_SESSION["username"])&&isset($_SESSION["userid"])){
         return true;
     }
     else{
@@ -33,17 +34,17 @@ function checkLoggedIn(){
     }
 }
 /** Om person klickat på logga in*/
-function setSessionLoggin(){
+function checkLoginPost(){
     if(isset($_POST["username"]) && isset($_POST["password"])){
         $name = $_POST["username"];
         $pass = $_POST["password"];
         $conn = connectDb();
-        $prepState = $conn->prepare("SELECT UserID, UserName, Password FROM users WHERE Username ='".$name."' AND password = '".$pass."' ");
+        $prepState = $conn->prepare("SELECT UserID, UserName FROM users WHERE Username ='".$name."' AND password = '".$pass."' ");
         $prepState->execute();
         $fetchedData = $prepState->fetchAll();
         if (count($fetchedData) >= 1){
-            $_SESSION["username"]=$_POST["username"];
-            $_SESSION["password"]=$_POST["password"];
+            $_SESSION["username"]=$fetchedData[0]["UserName"];
+            $_SESSION["userid"]=$fetchedData[0]["UserID"];
         }
     }
     else{
