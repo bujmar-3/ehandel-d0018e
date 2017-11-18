@@ -35,8 +35,16 @@ function checkLoggedIn(){
 /** Om person klickat på logga in*/
 function setSessionLoggin(){
     if(isset($_POST["username"]) && isset($_POST["password"])){
-        $_SESSION["username"]=$_POST["username"];
-        $_SESSION["password"]=$_POST["password"];
+        $name = $_POST["username"];
+        $pass = $_POST["password"];
+        $conn = connectDb();
+        $prepState = $conn->prepare("SELECT UserID, UserName, Password FROM users WHERE Username ='".$name."' AND password = '".$pass."' ");
+        $prepState->execute();
+        $fetchedData = $prepState->fetchAll();
+        if (count($fetchedData) >= 1){
+            $_SESSION["username"]=$_POST["username"];
+            $_SESSION["password"]=$_POST["password"];
+        }
     }
     else{
         return;
