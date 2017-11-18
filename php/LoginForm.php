@@ -12,16 +12,22 @@ function getLoginForm(){
     /** Om ej inloggad visa formulär*/
     if(checkLoggedIn()==false){
         echo '
-        <form action="index.php" method="post">
-        Användarnamn: <input type="text" name="username"><br>
-        Lösenord: <input type="password" name="password"><br>
-        <input type="submit" name="Logga in">
+        <form id="loginForm" action="index.php" method="post">
+        Användarnamn: <br><input type="text" name="username"><br>
+        Lösenord: <br><input type="password" name="password"><br>
+        <input type="submit" value="Logga in">
+        <p><a href="">Registrera</a></p>
         </form>';
     }
+    /** om inloggad visa detta */
     else{
         $name = $_SESSION["username"];
         $id = $_SESSION["userid"];
-        echo 'inloggad som ' . $name . ' UserID ' . $id;
+        echo '<div id="loginForm">';
+        echo '<p>Inloggad som:' .$name . '</p>';
+        echo '<br>';
+        echo '<p>UserID:' .$id . '</p>';
+        echo '</div>';
     }
 }
 /** Kollar om sessionen inehåller användardata, retunerar true eller false*/

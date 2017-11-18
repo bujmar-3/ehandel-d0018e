@@ -1,10 +1,11 @@
 #productList {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    margin-left: auto;
+    margin-left: 20%;
+    float: left;
     margin-right: auto;
     min-width: 60%;
-    margin-top: -100px;
+    max-width: 60%;
 }
 
 /* Tabell-huvud specefikt för productList */
@@ -22,4 +23,23 @@
 #productList td, th{
     padding: 8px;
     width: 33%;
+}
+
+#loginForm{
+    margin-right: auto;
+    float: left;
+    min-width: 15%;
+    max-width: 15%;
+    background-color: #5e83af;
+    padding-left: 10px;
+    min-height: 150px;
+}
+
+#loginForm input[type=text], input[type=password]{
+    width: 80%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
