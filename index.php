@@ -11,7 +11,6 @@
 <body>
     <?php
     session_start();
-    setSessionLoggin();
     ListProducts(getProducts());
     getLoginForm();
     ?>

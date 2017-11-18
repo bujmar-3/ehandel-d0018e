@@ -8,8 +8,9 @@
 
 /** getLoginForm skapar ett login fomrulär, bundet till index.php vid submit*/
 function getLoginForm(){
+    setSessionLoggin();
     /** Om ej inloggad visa formulär*/
-    if(CheckLoggedIn()==false){
+    if(checkLoggedIn()==false){
         echo '
         <form action="index.php" method="post">
         Användarnamn: <input type="text" name="username"><br>
@@ -22,8 +23,8 @@ function getLoginForm(){
         echo 'inloggad som ' . $name;
     }
 }
-
-function CheckLoggedIn(){
+/** Kollar om sessionen inehåller användardata, retunerar true eller false*/
+function checkLoggedIn(){
     if(isset($_SESSION["username"])&&isset($_SESSION["password"])){
         return true;
     }
@@ -31,7 +32,7 @@ function CheckLoggedIn(){
         return false;
     }
 }
-
+/** Om person klickat på logga in*/
 function setSessionLoggin(){
     if(isset($_POST["username"]) && isset($_POST["password"])){
         $_SESSION["username"]=$_POST["username"];
