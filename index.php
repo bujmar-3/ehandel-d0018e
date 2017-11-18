@@ -6,10 +6,12 @@
     <title>Test Site</title>
     <?php include 'php/DbConnection.php'; ?>
     <?php include 'php/ListProducts.php'; ?>
+    <?php include 'php/LoginForm.php'; ?>
 </head>
 <body>
     <?php
     ListProducts(getProducts());
+    getLoginForm();
     ?>
 </body>
 </html>

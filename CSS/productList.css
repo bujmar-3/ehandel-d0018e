@@ -1,8 +1,10 @@
 #productList {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    margin:auto;
+    margin-left: auto;
+    margin-right: auto;
     min-width: 60%;
+    margin-top: -100px;
 }
 
 /* Tabell-huvud specefikt för productList */
