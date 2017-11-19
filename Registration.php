@@ -1,29 +1,63 @@
-<!DOCTYPE html>
-<html lang="sv">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/productList.css">
-    <?php include 'php/DbConnection.php'; ?>
-</head>>
-
-<body>
-SUCCESS!!
-<!--
-    <form action="<? //php checkData($user, $name, $lname, $pass, $pass_rep, $adress, $zip) ?>" method="post" id="register">
-        <fieldset>
-            <label for="1"><b>Användarnamn: *</b></label><br><input type="text" name="username" id="1" required <? //php $user = $_POST['username']; ?> >
-            <label for="2"><b>Namn: </b></label><br><input type="text" name="name" id="2" <? //php $name = $_POST["name"]; ?> >
-            <label for="3"><b>Eftermanm: </b></label><br><input type="text" name="lastname" id="3" <? //php $lname = $_POST["lastname"]; ?> >
-            <label for="4"><b>Lösenord: *</b></label><br><input type="password" name="pass" id="4" required <? //php $pass = $_POST["pass"]; ?> >
-            <label for="5"><b>Upprepa lösenord: *</b></label><br><input type="password" name="pass_rep" id="5" required <? //php $pass_rep = $_POST["pass_rep"]; ?> >
-            <label for="6"><b>Adress: </b></label><br><input type="text" name="adress" id="6" <? //php $adress = $_POST["adress"]; ?> >
-            <label for="7"><b>Postkod: </b></label><br><input type="text" name="zip" id="7" <? //php $zip = $_POST["zip"]; ?> >
-            <input type="submit" name="Registrera">
-           <!-- <button type="button" onclick="" name="Avbryt"></button> -->
-        <!-- </fieldset>
-    </form> -->
 <?php
-/*
+echo '<!DOCTYPE html>';
+echo '<html lang="sv">';
+echo '<head>';
+echo    '<meta charset="UTF-8">';
+echo    '<link rel="stylesheet" type="text/css" href="css/productList.css">';
+        include 'php/DbConnection.php';
+echo    '</head>';
+echo    '<body>';
+
+    echo '<form method="post" id="register" action="Registration.php">';
+        echo '<fieldset>';
+        echo    '<legend><b>Registrering</b></legend>';
+        echo    '<label for="1"><b>Användarnamn: *</b></label><br><input type="text" name="username" id="1" required><br><br>';
+        echo    '<label for="2"><b>Namn: </b></label><br><input type="text" name="name" id="2"><br><br>';
+        echo    '<label for="3"><b>Eftermanm: </b></label><br><input type="text" name="lastname" id="3"><br><br>';
+        echo    '<label for="4"><b>Lösenord: *</b></label><br><input type="text" name="pass" id="4" required><br><br>';
+        echo    '<label for="5"><b>Upprepa lösenord: *</b><br></label><input type="text" name="pass_rep" id="5" required><br><br>';
+        echo    '<label for="6"><b>Adress: </b></label><br><input type="text" name="adress" id="6"><br><br>';
+        echo    '<label for="7"><b>Postkod: </b></label><br><input type="text" name="zip" id="7"><br><br>';
+        echo    '<input type="submit" name="Registrera">';
+        echo   '<!-- <button type="button" onclick="" name="Avbryt"></button> -->';
+
+                if (isset($_POST["username"])) {
+                    $user = $_POST["username"];
+                }
+                if (isset($_POST["name"])) {
+                    $name = $_POST["name"];
+                }
+                else {
+                    $name = null;
+                }
+                if (isset($_POST["lastname"])) {
+                    $lname = $_POST["lastname"];
+                }
+                else {
+                    $lname = null;
+                }
+                if (isset($_POST["pass"])) {
+                    $pass = $_POST["pass"];
+                }
+                if (isset($_POST["pass_rep"])) {
+                    $pass_rep = $_POST["pass_rep"];
+                }
+                if (isset($_POST["adress"])) {
+                    $adress = $_POST["adress"];
+                }
+                else {
+                    $adress = null;
+                }
+                if (isset($_POST["zip"])) {
+                    $zip = $_POST["zip"];
+                }
+                else {
+                    $zip = null;
+                }
+//checkData($user, $name, $lname, $pass, $pass_rep, $adress, $zip);
+echo '</fieldset>';
+echo '</form>';
+
 Function checkData($user, $name, $lname, $pass, $pass_rep, $adress, $zip)
 {
     if(isset($_SESSION["username"])&&isset($_SESSION["pass"])&&isset($_SESSION["pass_rep"])){
@@ -57,7 +91,8 @@ Function insertData($username, $name, $lname, $pass, $adress, $zip)
     } else {
         echo "Error";
     }
-} */
+}
+
+echo '</body>';
+echo '</html>';
 ?>
-</body>
-</html>
