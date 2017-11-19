@@ -2,10 +2,8 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../css/productList.css">
-    <?php include 'DbConnection.php'; ?>
-    <?php include 'LoginForm.php'; ?>
-    <?php include '../index.php'; ?>
+    <link rel="stylesheet" type="text/css" href="css/productList.css">
+    <?php include 'php/DbConnection.php'; ?>
 </head>>
 
 <body>

@@ -7,7 +7,6 @@
     <?php include 'php/DbConnection.php'; ?>
     <?php include 'php/ListProducts.php'; ?>
     <?php include 'php/LoginForm.php'; ?>
-    <?php include 'php/Registration.php'; ?> 
 </head>
 <body>
     <?php
