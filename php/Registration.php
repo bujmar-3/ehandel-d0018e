@@ -19,7 +19,7 @@
             <label for="6"><b>Adress: </b></label><br><input type="text" name="adress" id="6" <?php $adress = $_POST["adress"]; ?> >
             <label for="7"><b>Postkod: </b></label><br><input type="text" name="zip" id="7" <?php $zip = $_POST["zip"]; ?> >
             <input type="submit" name="Registrera">
-           <!-- <button type="button" onclick="" name="Avbryt"></button> --> 
+           <!-- <button type="button" onclick="" name="Avbryt"></button> -->
         </fieldset>
     </form>
 <?php

@@ -16,7 +16,7 @@ function getLoginForm(){
         Användarnamn: <br><input type="text" name="username"><br>
         Lösenord: <br><input type="password" name="password"><br>
         <input type="submit" value="Logga in">
-        <p><a href="">Registrera</a></p>
+        <p><a href="Registration.php">Registrera</a></p>
         </form>';
     }
     /** om inloggad visa detta */
