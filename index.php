@@ -10,9 +10,10 @@
 </head>
 <body>
 <?php session_start(); ?>
-    <div id="navmenu">
-        testmeny
-    </div>
+<div id="navmenu">
+    <p>testmeny</p>
+</div>
+<div id="wrapper">
     <div id="content">
         <?php
         ListProducts(getProducts());
@@ -23,5 +24,6 @@
         getLoginForm();
         ?>
     </div>
+</div>
 </body>
 </html>
