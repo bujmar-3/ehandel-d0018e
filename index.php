@@ -10,7 +10,7 @@
 </head>
 <body>
 <?php session_start(); ?>
-<div id="navmenu">
+<div id="header">
     <p>testmeny</p>
 </div>
 <div id="wrapper">

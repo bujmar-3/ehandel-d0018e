@@ -19,7 +19,7 @@
     float: right;
 }
 
-#navmenu {
+#header {
     margin-left: auto;
     margin-right: auto;
     min-width: 60%;
@@ -34,6 +34,8 @@
 }
 
 /* Här under finns CSS för specefika funktioner på sidan*/
+
+/* Produktlista CSS*/
 #productList th{
     padding-top: 15px;
     padding-bottom: 15px;
@@ -49,7 +51,7 @@
     padding: 8px;
     width: 33%;
 }
-
+/* Loginpanel CSS*/
 #loginForm{
     min-width: 100%;
     max-width: 100%;
@@ -65,3 +67,13 @@
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
+/* Meny CSS*/
+#navmenu{
+    min-width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#navmenu
