@@ -7,11 +7,16 @@
     <?php include 'php/DbConnection.php'; ?>
     <?php include 'php/ListProducts.php'; ?>
     <?php include 'php/LoginForm.php'; ?>
+    <?php include 'php/Navbar.php'; ?>
 </head>
 <body>
 <?php session_start(); ?>
 <div id="header">
-    <p>testmeny</p>
+    <div id="navmenu">
+        <?php
+        getNavBar();
+        ?>
+    </div>
 </div>
 <div id="wrapper">
     <div id="content">
