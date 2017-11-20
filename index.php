@@ -9,10 +9,19 @@
     <?php include 'php/LoginForm.php'; ?>
 </head>
 <body>
-    <?php
-    session_start();
-    ListProducts(getProducts());
-    getLoginForm();
-    ?>
+<?php session_start(); ?>
+    <div id="navmenu">
+        testmeny
+    </div>
+    <div id="content">
+        <?php
+        ListProducts(getProducts());
+        ?>
+    </div>
+    <div id="right-sidebar">
+        <?php
+        getLoginForm();
+        ?>
+    </div>
 </body>
 </html>
