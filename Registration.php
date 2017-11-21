@@ -11,13 +11,13 @@ echo    '<body>';
     echo '<form method="post" id="register" action="Registration.php">';
         echo '<fieldset>';
         echo    '<legend><b>Registrering</b></legend>';
-        echo    '<label for="1"><b>Användarnamn: *</b></label><br><input type="text" name="username" id="1" required><br><br>';
-        echo    '<label for="2"><b>Namn: </b></label><br><input type="text" name="name" id="2"><br><br>';
-        echo    '<label for="3"><b>Eftermanm: </b></label><br><input type="text" name="lastname" id="3"><br><br>';
+        echo    '<label for="1"><b>Användarnamn: *</b></label><br><input value="" type="text" name="username" id="1" required><br><br>';
+        echo    '<label for="2"><b>Namn: </b></label><br><input value="" type="text" name="name" id="2"><br><br>';
+        echo    '<label for="3"><b>Eftermanm: </b></label><br><input value="" type="text" name="lastname" id="3"><br><br>';
         echo    '<label for="4"><b>Lösenord: *</b></label><br><input type="text" name="pass" id="4" required><br><br>';
         echo    '<label for="5"><b>Upprepa lösenord: *</b><br></label><input type="text" name="pass_rep" id="5" required><br><br>';
-        echo    '<label for="6"><b>Adress: </b></label><br><input type="text" name="adress" id="6"><br><br>';
-        echo    '<label for="7"><b>Postkod: </b></label><br><input type="text" name="zip" id="7"><br><br>';
+        echo    '<label for="6"><b>Adress: </b></label><br><input value="" type="text" name="adress" id="6"><br><br>';
+        echo    '<label for="7"><b>Postkod: </b></label><br><input value="" type="text" name="zip" id="7"><br><br>';
         echo    '<input type="submit" name="Registrera">';
         echo   '<!-- <button type="button" onclick="" name="Avbryt"></button> -->';
 
