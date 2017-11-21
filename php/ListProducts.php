@@ -16,7 +16,6 @@ foreach ($fetchedData as $row)
     echo        '<td>'. $row['Name'] .'</td>';
     echo        '<td>'. $row['Price'] .'</td>';
     echo        '<td>'. $row['Amount'] .'</td>';
-    echo        '</br>';
     echo    '</tr>';
 
     }

@@ -38,10 +38,5 @@ function getProducts(){
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     return $fetchedData;
-    /**foreach ($fetchedData as $row){
-        echo $row['Name'] . "<br />";
-        echo $row['Price'] . "<br />";
-        echo $row['Amount'] . "<br />";
-        echo "Här över ska data komma";*/
     }
 ?>
