@@ -25,20 +25,20 @@ echo    '<body>';
 
 <?php
         check();
-        function check() {
-            if(isset($_POST['username']))
-            {
-                $username = $_POST["username"];
-                $pass = $_POST["pass"];
-                $pass_rep = $_POST["pass_rep"];
-                signUp($username, $pass, $pass_rep);
-            }
-        }
+
 
 echo '</fieldset>
      </form>';
-    
 
+function check() {
+    if(isset($_POST['username']))
+    {
+        $username = $_POST["username"];
+        $pass = $_POST["pass"];
+        $pass_rep = $_POST["pass_rep"];
+        signUp($username, $pass, $pass_rep);
+    }
+}
 Function signUp($user, $pass, $pass_rep)
 {
 
@@ -49,7 +49,6 @@ Function signUp($user, $pass, $pass_rep)
             $fetchedData = $prepState->fetchAll();
             if (count($fetchedData) == 0){
                 newUser();
-                return true;
             }
             else {
                 echo '<script> alert("Användarnamnet du angivit är redan taget") </script>';
