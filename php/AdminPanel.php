@@ -17,7 +17,7 @@ function getAdminPanel(){
     <input type="submit" value="Välj">
     </form>
     ';
-checkAdminPost();
+    checkAdminPost();
 }
 
 /**Kollar vilken alternativ som valts i admin panelen */
@@ -44,12 +44,13 @@ function checkAdminPost(){
 function editUser(){
     echo'
     <form id="editUser" action="Administrator.php" method="post">
-        Användarnamn:<input type="text" name="editUserName"><br>';
+        <input type="hidden" name="adminOption" value="user">
+        Användarnamn:<input type="text" name="editUserName">
+        <input type="submit" value="Hämta data"><br>';
         if(isset($_POST["editUserName"])){
             getUserData();
         }
     echo'
-        <input type="submit" value="Välj">
     </form>
     ';
 }
@@ -59,17 +60,21 @@ function getUserData(){
     $prepState = $conn->prepare("SELECT * FROM users WHERE Username ='".$_POST["editUserName"]."'");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
-    $Fname = $fetchedData[0]["Fname"];
-    $Lname = $fetchedData[0]["Fname"];
-    $Address = $fetchedData[0]["Fname"];
-    $ZipCode = $fetchedData[0]["Fname"];
-    $UserType = $fetchedData[0]["Fname"];
-    echo'
-    Fname:<input type="text" name="editUserFname" value="' .$Fname . '"><br>;
-    Lname:<input type="text" name="editUserLname" value="' .$Lname . '"><br>;
-    Address:<input type="text" name="editUserAddress" value="' .$Address . '"><br>;
-    ZipCode:<input type="text" name="editUserZipcode" value="' .$ZipCode . '"><br>;
-    UserType:<input type="text" name="editUserUserType" value="' .$UserType . '"><br>;
-    ';
+    if(count($fetchedData) == 0){
+        echo 'Kunde inte hitta användare';
+    }else{
+        $Fname = $fetchedData[0]["Fname"];
+        $Lname = $fetchedData[0]["Lname"];
+        $Address = $fetchedData[0]["Adress"];
+        $ZipCode = $fetchedData[0]["Zipcode"];
+        $UserType = $fetchedData[0]["UserType"];
+        echo'
+        Fname:<input type="text" name="editUserFname" value="' .$Fname . '"><br>
+        Lname:<input type="text" name="editUserLname" value="' .$Lname . '"><br>
+        Address:<input type="text" name="editUserAddress" value="' .$Address . '"><br>
+        ZipCode:<input type="text" name="editUserZipcode" value="' .$ZipCode . '"><br>
+        UserType:<input type="text" name="editUserUserType" value="' .$UserType . '"><br>
+            ';
+    }
 }
 ?>
