@@ -1,14 +1,10 @@
-<?php
-echo '<!DOCTYPE html>';
-echo '<html lang="sv">';
-echo '<head>';
-echo    '<meta charset="UTF-8">';
-echo    '<link rel="stylesheet" type="text/css" href="css/productList.css">';
-        include 'php/DbConnection.php';
-echo    '</head>';
-echo    '<body>';
-?>
-
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <?php include 'php/DbConnection.php'; ?>
+</head>
+<body>
     <form method="post" id="register" action="Registration.php">
         <fieldset>
         <legend><b>  Registrering  </b></legend>
@@ -21,30 +17,21 @@ echo    '<body>';
         <label for="7"><b>Postkod: </b></label><br><input value="<?php if (isset($_POST["zip"])) {echo $_POST["zip"];} ?>" type="text" name="zip" id="7"><br><br>
         <input type="submit" name="Registrera">
         <a href="index.php">Gå tillbaka</a>
-        <!-- <button name="Button" onclick="index.php">Avbryt</button> -->
+        </fieldset>
+    </form>
+</body>
+</html>
 
 <?php
-        check();
-
-
-echo '</fieldset>
-     </form>';
-
-function check() {
-    if(isset($_POST['username']))
-    {
-        $username = $_POST["username"];
-        $pass = $_POST["pass"];
-        $pass_rep = $_POST["pass_rep"];
-        signUp($username, $pass, $pass_rep);
+    if (isset($_POST['username']) && isset($_POST['pass']) && isset($_POST['pass_rep'])) {
+        signUp();
     }
-}
-Function signUp($user, $pass, $pass_rep)
-{
 
-        if ($pass_rep==$pass) {
+Function signUp()
+{
+        if ($_POST['pass_rep']== $_POST['pass_rep']) {
             $conn = connectDb();
-            $prepState = $conn->prepare("SELECT UserName FROM users WHERE Username ='".$user."'");
+            $prepState = $conn->prepare("SELECT UserName FROM users WHERE Username ='".$_POST['username']."'");
             $prepState->execute();
             $fetchedData = $prepState->fetchAll();
             if (count($fetchedData) == 0){
@@ -58,54 +45,21 @@ Function signUp($user, $pass, $pass_rep)
             echo '<script> alert("Lösenord och upprepa lösenord matchar inte varandra") </script>';
         }
 }
-
 Function newUser()
 {
-    if (isset($_POST["username"])) {
-        $user = $_POST["username"];
-    }
-    else {
-        $user = null;
-    }
-    if (isset($_POST["name"])) {
-        $name = $_POST["name"];
-    }
-    else {
-        $name = null;
-    }
-    if (isset($_POST["lastname"])) {
-        $lname = $_POST["lastname"];
-    }
-    else {
-        $lname = null;
-    }
-    if (isset($_POST["pass"])) {
-        $pass = $_POST["pass"];
-    }
-    else {
-        $pass = null;
-    }
-    if (isset($_POST["adress"])) {
-        $adress = $_POST["adress"];
-    }
-    else {
-        $adress = null;
-    }
-    if (isset($_POST["zip"])) {
-        $zip = $_POST["zip"];
-    }
-    else {
-        $zip = null;
-    }
+    $user = $_POST["username"];
+    $name = $_POST["name"];
+    $lname = $_POST["lastname"];
+    $pass = $_POST["pass"];
+    $adress = $_POST["adress"];
+    $zip = $_POST["zip"];
     $conn = connectDb();
     $sql = "INSERT INTO `users` (`UserID`,`UserName`, `Fname`, `Lname`, `Password`, `Adress`, `Zipcode`, `UserType`) VALUES (DEFAULT ,'$user', '$name', '$lname', '$pass', '$adress', '$zip', '1')";
+
     if ($conn->exec($sql) == TRUE) {
         echo '<script> alert("Ny användare skapad!") </script>';
     } else {
-        echo "Error";
+        echo "Error: Kan inte lägga till data i databasen.";
     }
 }
-
-echo '</body>';
-echo '</html>';
 ?>
