@@ -66,7 +66,7 @@ function editUser(){
     echo'
     <form id="editUser" action="Administrator.php" method="post">
         <input type="hidden" name="adminOption" value="user">
-        Användarnamn:<input type="text" name="editUserName">
+        Användarnamn:<input type="text" name="editUserName" required>
         <input type="submit" value="Hämta data"><br>
     </form>';
         if(isset($_POST["editUserName"])){
@@ -126,9 +126,9 @@ function addProduct(){
           <form id="addProduct" action="Administrator.php" method="post">
             <input type="hidden" name="adminOption" value="addproduct">
             <input type="hidden" name="adminChoise" value="saveaddproduct">
-            Produktnamn: <input type="text" name="addProductName"><br>
-            Pris: <input type="text" name="addProductPrice"><br>
-            Antal: <input type="text" name="addProductAmount"><br>
+            Produktnamn: <input type="text" name="addProductName" required><br>
+            Pris: <input type="text" name="addProductPrice" required><br>
+            Antal: <input type="text" name="addProductAmount" required><br>
             Produkt Beskrivning:<br><textarea rows="12" cols="80" name="addProductDescription" form="addProduct">Beskrivning..</textarea><br>
             <input type="submit" value="Lägg till produkt">
           </form>
@@ -165,7 +165,7 @@ function removeProduct(){
         <form id="removeProduct" action="Administrator.php" method="post">
             <input type="hidden" name="adminOption" value="removeproduct">
             <input type="hidden" name="adminChoise" value="saveremoveproduct">
-            Produktnamn: <input type="text" name="removeProductName"><br>
+            Produktnamn: <input type="text" name="removeProductName" required><br>
             <input type="submit" value="Ta bort produkt">
         </form>
     ';
@@ -184,7 +184,7 @@ function editProduct(){
     echo'
     <form id="editProduct" action="Administrator.php" method="post">
         <input type="hidden" name="adminOption" value="editproduct">
-        Produktnamn:<input type="text" name="editProductName">
+        Produktnamn:<input type="text" name="editProductName" required>
         <input type="submit" value="Hämta data"><br>
     </form>';
     if(isset($_POST["editProductName"])){
