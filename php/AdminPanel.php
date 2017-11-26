@@ -12,7 +12,7 @@ function getAdminPanel(){
         <option value="user">Användare</option>
         <option value="addproduct">Lägg till produkt</option>
         <option value="removeproduct">Ta bort produkt</option>
-        <option value="changeproduct">Redigera produkt</option>
+        <option value="editproduct">Redigera produkt</option>
     </select>
     <input type="submit" value="Välj">
     </form>
@@ -43,10 +43,20 @@ function checkAdminPost(){
             }
         }
         if($_POST["adminOption"] == "removeproduct"){
-            echo 'valde removeproduct';
+            if(isset($_POST["adminChoise"])){
+                saveRemoveProduct();
+            }
+            else{
+                removeProduct();
+            }
         }
-        if($_POST["adminOption"] == "changeproduct"){
-            echo 'valde changeproduct';
+        if($_POST["adminOption"] == "editproduct"){
+            if(isset($_POST["adminChoise"])){
+                saveProductData();
+            }
+            else{
+                editProduct();
+            }
         }
     }
 }
@@ -106,11 +116,11 @@ function saveUserData(){
     $prepState = $conn->prepare("UPDATE users SET Fname='$Fname',Lname='$Lname',Adress='$Address',Zipcode=$ZipCode,UserType=$UserType WHERE UserID=$UserID ");
     $prepState->execute();
     echo '
-    <p>Användare '.$_POST["editUserName"].' uppdaterad!</p>
+    <p>Användare uppdaterad!</p>
     ';
 }
 /**-----------------------Slut på redigera användare----------------------------*/
-/***/
+/** Funktioner för att lägga till produkt*/
 function addProduct(){
     echo '
           <form id="addProduct" action="Administrator.php" method="post">
@@ -147,5 +157,81 @@ function doesExist($tableName, $columnName, $value){
     else{
         return false;
     }
+}
+/**-----------------------Slut på lägga till ny produkt----------------------------*/
+/** Funktioner för att ta bort produkt*/
+function removeProduct(){
+    echo '
+        <form id="removeProduct" action="Administrator.php" method="post">
+            <input type="hidden" name="adminOption" value="removeproduct">
+            <input type="hidden" name="adminChoise" value="saveremoveproduct">
+            Produktnamn: <input type="text" name="removeProductName"><br>
+            <input type="submit" value="Ta bort produkt">
+        </form>
+    ';
+}
+
+function saveRemoveProduct(){
+    $Name = $_POST["removeProductName"];
+    $conn = connectDb();
+    $prepState = $conn->prepare("DELETE FROM product WHERE Name='$Name'");
+    $prepState->execute();
+    echo 'produkt borttagen';
+}
+/**-----------------------Slut på ta bort produkt----------------------------*/
+/** Funktioner för att redigera produkt*/
+function editProduct(){
+    echo'
+    <form id="editProduct" action="Administrator.php" method="post">
+        <input type="hidden" name="adminOption" value="editproduct">
+        Produktnamn:<input type="text" name="editProductName">
+        <input type="submit" value="Hämta data"><br>
+    </form>';
+    if(isset($_POST["editProductName"])){
+        getProductData();
+    }
+}
+
+function getProductData(){
+    $conn = connectDb();
+    $prepState = $conn->prepare("SELECT * FROM product WHERE Name ='".$_POST["editProductName"]."'");
+    $prepState->execute();
+    $fetchedData = $prepState->fetchAll();
+    if(count($fetchedData) == 0){
+        echo 'Kunde inte hitta produkt';
+    }
+    else{
+        $Name = $fetchedData[0]["Name"];
+        $Price = $fetchedData[0]["Price"];
+        $Amount = $fetchedData[0]["Amount"];
+        $Description = $fetchedData[0]["Description"];
+        $ProductID = $fetchedData[0]["ProductID"];
+        echo'
+            <form id="addProduct" action="Administrator.php" method="post">
+                <input type="hidden" name="editproductID" value="'.$ProductID.'">
+                <input type="hidden" name="adminOption" value="editproduct">
+                <input type="hidden" name="adminChoise" value="saveeditproduct">
+                Produktnamn: <input type="text" name="editProductName" value="'.$Name.'"><br>
+                Pris: <input type="text" name="editProductPrice" value="'.$Price.'"><br>
+                Antal: <input type="text" name="editProductAmount" value="'.$Amount.'"><br>
+                Produkt Beskrivning:<br><textarea rows="12" cols="80" name="editProductDescription" form="addProduct">'.$Description.'</textarea><br>
+                <input type="submit" value="Lägg till produkt">
+            </form>
+        ';
+    }
+}
+
+function saveProductData(){
+    $Name = $_POST["editProductName"];
+    $Price = $_POST["editProductPrice"];
+    $Amount = $_POST["editProductAmount"];
+    $Description= $_POST["editProductDescription"];
+    $ProductID= $_POST["editproductID"];
+    $conn = connectDb();
+    $prepState = $conn->prepare("UPDATE product SET Name='$Name',Price=$Price,Amount=$Amount,Description='$Description' WHERE ProductID=$ProductID ");
+    $prepState->execute();
+    echo '
+    <p>Produkt uppdaterad!</p>
+    ';
 }
 ?>
