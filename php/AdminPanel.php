@@ -35,7 +35,12 @@ function checkAdminPost(){
             }
         }
         if($_POST["adminOption"] == "addproduct"){
-            echo 'valde addproduct';
+            if(isset($_POST["adminChoise"])){
+                saveAddProduct();
+            }
+            else {
+                addProduct();
+            }
         }
         if($_POST["adminOption"] == "removeproduct"){
             echo 'valde removeproduct';
@@ -89,7 +94,7 @@ function getUserData(){
             ';
     }
 }
-/**Tar data från användar formulär och uppdaterar databasen*/
+/**Tar data från användarformulär och uppdaterar databasen*/
 function saveUserData(){
     $Fname = $_POST["editUserFname"];
     $Lname = $_POST["editUserLname"];
@@ -100,7 +105,47 @@ function saveUserData(){
     $conn = connectDb();
     $prepState = $conn->prepare("UPDATE users SET Fname='$Fname',Lname='$Lname',Adress='$Address',Zipcode=$ZipCode,UserType=$UserType WHERE UserID=$UserID ");
     $prepState->execute();
+    echo '
+    <p>Användare '.$_POST["editUserName"].' uppdaterad!</p>
+    ';
+}
+/**-----------------------Slut på redigera användare----------------------------*/
+/***/
+function addProduct(){
+    echo '
+          <form id="addProduct" action="Administrator.php" method="post">
+            <input type="hidden" name="adminOption" value="addproduct">
+            <input type="hidden" name="adminChoise" value="saveaddproduct">
+            Produktnamn: <input type="text" name="addProductName"><br>
+            Pris: <input type="text" name="addProductPrice"><br>
+            Antal: <input type="text" name="addProductAmount"><br>
+            Produkt Beskrivning:<br><textarea rows="12" cols="80" name="addProductDescription" form="addProduct">Beskrivning..</textarea><br>
+            <input type="submit" value="Lägg till produkt">
+          </form>
+    ';
 }
 
+function saveAddProduct(){
+    $Name = $_POST["addProductName"];
+    $Price = $_POST["addProductPrice"];
+    $Amount = $_POST["addProductAmount"];
+    $Description = $_POST["addProductDescription"];
+    $conn = connectDb();
+    $prepState = $conn->prepare("INSERT INTO product(ProductID, Name, Price, Amount, Description) VALUES (DEFAULT,'$Name',$Price,$Amount,'$Description')");
+    $prepState->execute();
+}
 
+/**Kollar om datat redan existerar i databasen - flytta till DbConnections sen*/
+function doesExist($tableName, $columnName, $value){
+    $conn = connectDb();
+    $prepState = $conn->prepare("SELECT $columnName FROM $tableName WHERE $columnName=$value ");
+    $prepState->execute();
+    $fetchedData = $prepState->fetchAll();
+    if (count($fetchedData) >= 1){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 ?>
