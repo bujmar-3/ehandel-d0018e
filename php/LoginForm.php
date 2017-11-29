@@ -23,11 +23,16 @@ function getLoginForm(){
     else{
         $name = $_SESSION["username"];
         $id = $_SESSION["userid"];
-        echo '<div id="loginForm">';
-        echo '<p>Inloggad som:' .$name . '</p>';
-        echo '<br>';
-        echo '<p>UserID:' .$id . '</p>';
-        echo '</div>';
+        echo '<div id="loginForm">
+        <p>Inloggad som:' .$name . '</p>
+        <br>
+        <p>UserID:' .$id . '</p>';
+        if(isset($_SESSION["usertype"]) && $_SESSION["usertype"]==1){
+            echo '<a href="Administrator.php">Admin panel</a>';
+        }
+        echo '
+        </div>;
+        ';
     }
 }
 /** Kollar om sessionen inehåller användardata, retunerar true eller false*/
@@ -45,12 +50,13 @@ function checkLoginPost(){
         $name = $_POST["username"];
         $pass = $_POST["password"];
         $conn = connectDb();
-        $prepState = $conn->prepare("SELECT UserID, UserName FROM users WHERE Username ='".$name."' AND password = '".$pass."' ");
+        $prepState = $conn->prepare("SELECT UserID, UserName, UserType FROM users WHERE Username ='".$name."' AND password = '".$pass."' ");
         $prepState->execute();
         $fetchedData = $prepState->fetchAll();
         if (count($fetchedData) >= 1){
             $_SESSION["username"]=$fetchedData[0]["UserName"];
             $_SESSION["userid"]=$fetchedData[0]["UserID"];
+            $_SESSION["usertype"]=$fetchedData[0]["UserType"];
         }
     }
     else{

@@ -6,7 +6,8 @@
  * Time: 16:31
  */
 function getAdminPanel(){
-    echo'
+    if(isset($_SESSION["usertype"]) && $_SESSION["usertype"]==1) {
+        echo '
     <form id="adminFrom" action="Administrator.php" method="post">
     <select name="adminOption">
         <option value="user">Användare</option>
@@ -17,7 +18,11 @@ function getAdminPanel(){
     <input type="submit" value="Välj">
     </form>
     ';
-    checkAdminPost();
+        checkAdminPost();
+    }
+    else{
+        echo '<p>Du har inte rättighet att se denna sida.</p>';
+    }
 }
 
 /**Kollar vilken alternativ som valts i admin panelen */

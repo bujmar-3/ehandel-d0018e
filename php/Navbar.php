@@ -9,10 +9,10 @@
 function getNavBar(){
     echo '
     <ul>
-        <li><a href="default.asp">Produkter</a></li>
+        <li><a href="index.php">Produkter</a></li>
          <li><a href="news.asp">Profil</a></li>
          <li><a href="contact.asp">Om oss</a></li>
-         <li><a href="about.asp">Registrera</a></li>
+         <li><a href="Registration.php">Registrera</a></li>
     </ul>
     ';
 }
