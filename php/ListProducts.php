@@ -13,7 +13,7 @@ foreach ($fetchedData as $row)
     {
 
     echo    '<tr>';
-    echo        '<td><a href="ProductInfo.php">'. $row['Name'] .'</a></td>';
+    echo        '<td><a href="ProductInfo.php?ID=' . $row['ProductID'] . '">' . $row['Name'] . '</a></td>';
     echo        '<td>'. $row['Price'] .'</td>';
     echo        '<td>'. $row['Amount'] .'</td>';
     echo    '</tr>';

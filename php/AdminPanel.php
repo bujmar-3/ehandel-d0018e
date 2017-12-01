@@ -132,8 +132,8 @@ function addProduct(){
             <input type="hidden" name="adminOption" value="addproduct">
             <input type="hidden" name="adminChoise" value="saveaddproduct">
             Produktnamn: <input type="text" name="addProductName" required><br>
-            Pris: <input type="text" name="addProductPrice" required><br>
-            Antal: <input type="text" name="addProductAmount" required><br>
+            Pris: <input type="number" name="addProductPrice" required><br>
+            Antal: <input type="number" name="addProductAmount" required><br>
             Produkt Beskrivning:<br><textarea rows="12" cols="80" name="addProductDescription" form="addProduct">Beskrivning..</textarea><br>
             <input type="submit" value="Lägg till produkt">
           </form>
