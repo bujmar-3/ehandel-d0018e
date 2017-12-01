@@ -31,7 +31,7 @@ if (isset($_GET['ID'])) {
     <?php include 'php/DbConnection.php'; ?>
 </head>
 <body>
-<title><?php echo $namn; ?></title>
+<h1><?php echo $namn; ?></h1>
 <?php
 echo "$namn" . "$pris" . "$antal" . "$beskrivning";
 ?>
