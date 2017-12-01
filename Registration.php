@@ -14,7 +14,7 @@
         <label for="4"><b>Lösenord: *</b></label><br><input type="password" name="pass" id="4" required><br><br>
         <label for="5"><b>Upprepa lösenord: *</b><br></label><input type="password" name="pass_rep" id="5" required><br><br>
         <label for="6"><b>Adress: </b></label><br><input value="<?php if (isset($_POST["adress"])) {echo $_POST["adress"];} ?>" type="text" name="adress" id="6"><br><br>
-        <label for="7"><b>Postkod: </b></label><br><input value="<?php if (isset($_POST["zip"])) {echo $_POST["zip"];} ?>" type="text" name="zip" id="7"><br><br>
+        <label for="7"><b>Postkod: </b></label><br><input value="<?php if (isset($_POST["zip"])) {echo $_POST["zip"];} ?>" type="number" name="zip" id="7"><br><br>
         <input type="submit" name="Registrera">
         <a href="index.php">Gå tillbaka</a>
         </fieldset>
