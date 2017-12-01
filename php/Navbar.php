@@ -11,7 +11,7 @@ function getNavBar(){
     <ul>
         <li><a href="index.php">Produkter</a></li>
          <li><a href="news.asp">Profil</a></li>
-         <li><a href="contact.asp">Om oss</a></li>
+         <li><a href="Cart.php">Kundvagn</a></li>
          <li><a href="Registration.php">Registrera</a></li>
     </ul>
     ';
