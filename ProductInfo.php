@@ -30,7 +30,7 @@ else {
     echo "Ingen produkt i systemet har detta ID";
     exit();
 }
-echo $pris . "$antal" . "$beskrivning" . "$namn";
+echo $pris .'<br>' . "$antal" .'<br>' . "$beskrivning" .'<br>' . "$namn";
 ?>
 </body>
 </html>
