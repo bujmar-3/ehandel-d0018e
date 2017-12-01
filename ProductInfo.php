@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -5,7 +6,6 @@
     <?php include 'php/DbConnection.php'; ?>
 </head>
 <body>
-
 <?php
 if (isset($_GET['ID'])) {
     $id = $_GET['ID'];
@@ -30,7 +30,27 @@ else {
     echo "Ingen produkt i systemet har detta ID";
     exit();
 }
-echo $pris .'<br>' . "$antal" .'<br>' . "$beskrivning" .'<br>' . "$namn";
 ?>
+<table border="2px solid black">
+    <tr>
+        <td><?php echo "$namn" ?></td>
+    </tr>
+    <tr>
+        <td>Pris:     </td>
+        <td><?php echo "$pris" ?></td>
+    </tr>
+    <tr>
+        <td>Antal:     </td>
+        <td><?php echo "$antal" ?></td>
+    </tr>
+    <tr>
+        <td>Beskrivning:     </td>
+        <td><?php echo "$beskrivning" ?></td>
+    </tr>
+    <tr>
+        <td>Snittbetyg:     </td>
+    </tr>
+
+</table>
 </body>
 </html>
