@@ -6,8 +6,11 @@
  * Time: 16:09
  */
 function listCarts(){
-    $cartList = getCartData();
-    echo '
+    if(checkLoggedIn())
+    {
+        checkCartPost();
+        $cartList = getCartData();
+        echo '
             <table id="productList">
             <tr>
                 <th>Namn</th>
@@ -15,18 +18,24 @@ function listCarts(){
                 <th>Status</th>
             </tr>
         ';
-    if (count($cartList) >= 1){
-        createCartTable($cartList);
+        if (count($cartList) >= 1){
+            createCartTable($cartList);
+        }
+        else{
+            echo '
+            <p>Du har ingen kundvagn ännu.</p>
+        ';
+        }
+        createNewCartButton();
+        echo '
+            </table>
+    ';
     }
     else{
         echo '
-            <p>Du har ingen kundvagn ännu.</p>
+        <p>Du måste vara inloggad för att visa denna sida</p>
         ';
     }
-    echo '
-            </table>
-    ';
-
 }
 
 function getCartData(){
@@ -51,5 +60,29 @@ function createCartTable($cartList){
 }
 
 function createNewCartButton(){
+    $todayDate = date('Y-m-d');
+    echo'
+    <tr>
+            <form id="newCart" action="Cart.php" method="post">
+                <td><input type="text" name="newCartName" required></td>
+                <td>'. $todayDate .'</td>
+                <td><input type="submit" value="Skapa"></td>
+            </form>
+    </tr>
+    ';
+}
 
+function checkCartPost(){
+    if(isset($_POST["newCartName"])){
+        createNewCart();
+    }
+}
+
+function createNewCart(){
+    $todayDate = date('Y-m-d');
+    $name = $_POST["newCartName"];
+    $userID = $_SESSION["userid"];
+    $conn = connectDb();
+    $prepState = $conn->prepare("INSERT INTO order_instance(InstanceID, Date, UserID, Name, Status) VALUES (DEFAULT, '$todayDate', $userID, '$name', 1)");
+    $prepState->execute();
 }

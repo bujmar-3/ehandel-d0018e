@@ -11,7 +11,7 @@ $servername = "localhost";
 $username = "ehandelUser";
 $password = "mubbhandel";
 $port = "3306";
-$databasename = "ehandel_db2";
+$databasename = "ehandel_db3";
 
 /** Tar gobala variabler definerade i början av denna fil och skapar en uppkoppling*/
 function connectDb(){
