@@ -18,6 +18,7 @@ function listCarts(){
                 <th>Namn</th>
                 <th>Datum</th>
                 <th>Status</th>
+                <th></th>
             </tr>
         ';
         if (count($cartList) >= 1){
@@ -55,9 +56,14 @@ function createCartTable($cartList){
     foreach ($cartList as $row){
         echo '
             <tr>
-                <td><a href="Cart.php?ID=' . $row['InstanceID'] . '&Name='. $row['Name'] .'">' . $row['Name'] . '</a></td>
+                <td>'. $row['Name'] .'</td>
                 <td>'. $row['Date'] .'</td>
                 <td>'. $row['Status'] .'</td>
+                <form id="newCart" action="Cart.php" method="post">
+                <input type="hidden" name="activecart" value="'.$row['InstanceID'].'">
+                <input type="hidden" name="activecartname" value="'.$row['Name'].'">
+                <td><input type="submit" value="Välj"></td>
+                </form>
             </tr>
         ';
     }
@@ -84,6 +90,12 @@ function checkCartPost(){
     }
     if(isset($_GET['ID'])){
         showCart($_GET['ID'],$_GET['Name']);
+    }
+    if(isset($_POST['activecart'])){
+        setActiveCart($_POST['activecart'], $_POST['activecartname']);
+    }
+    if(isset($_SESSION['activecart'])){
+        showCart($_SESSION['activecart'], $_SESSION['activecartname']);
     }
 }
 
@@ -130,11 +142,16 @@ function showCart($cartId, $cartName)
     ';
 }
 
-    function getCartProducts($cartID)
-    {
-        $conn = connectDb();
-        $prepState = $conn->prepare("SELECT product.Name, orders.Amount, orders.Price FROM product, orders WHERE orders.instanceID = $cartID && orders.ProductID = product.ProductID");
-        $prepState->execute();
-        $fetchedData = $prepState->fetchAll();
-        return $fetchedData;
-    }
+function getCartProducts($cartID)
+{
+    $conn = connectDb();
+    $prepState = $conn->prepare("SELECT product.Name, orders.Amount, orders.Price FROM product, orders WHERE orders.instanceID = $cartID && orders.ProductID = product.ProductID");
+    $prepState->execute();
+    $fetchedData = $prepState->fetchAll();
+    return $fetchedData;
+}
+
+function setActiveCart($cartID, $cartName){
+    $_SESSION["activecart"] = $cartID;
+    $_SESSION["activecartname"] = $cartName;
+}
