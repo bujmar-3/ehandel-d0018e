@@ -10,33 +10,47 @@
 <body>
 <?php
     session_start();
-if (isset($_GET['ID'])) {
-    $id = $_GET['ID'];
-    $conn = connectDb();
-    $sql = $conn->prepare("SELECT * FROM `product` WHERE ProductId ='" . $id . "'");
-    $sql->execute();
-    $check = $sql->fetchAll();
-    if (count($check) > 0){
-        foreach ($check as $row) {
-            $namn = $row['Name'];
-            $pris = $row['Price'];
-            $antal = $row['Amount'];
-            $beskrivning = $row['Description'];
+    if (isset($_GET['ID'])) {
+        $id = $_GET['ID'];
+        $conn = connectDb();
+        $sql = $conn->prepare("SELECT * FROM `product` WHERE ProductId ='" . $id . "'");
+        $sql->execute();
+        $check = $sql->fetchAll();
+        if (count($check) > 0){
+                foreach ($check as $row) {
+                    $namn = $row['Name'];
+                    $pris = $row['Price'];
+                    $antal = $row['Amount'];
+                    $beskrivning = $row['Description'];
+                }
+        }
+        else {
+            echo "Denna produkt finns inte!";
+            exit();
         }
     }
     else {
-        echo "Denna produkt finns inte!";
+        echo "Ingen produkt i systemet har detta ID";
         exit();
     }
-}
-else {
-    echo "Ingen produkt i systemet har detta ID";
-    exit();
-}
-if (isset($_POST['addToCartButton'])) {
-    addToCart($id, $pris, 1);
-    echo '<script> alert("Produkten är nu tillagd i din kundvagn")</script>';
-}
+    if (isset($_POST['addToCartButton'])) {
+        addToCart($id, $pris, 1);
+        echo '<script> alert("Produkten är nu tillagd i din kundvagn")</script>';
+    }
+    /* // Skriv kommentar
+    if (isset($_POST['comment']) && (isset($_POST['productGrade']))) {
+        $conn = connectDb();
+        $com = $_POST['comment'];
+        $grade = $_POST['productGrade'];
+        $user = $_SESSION['userid'];
+        $sql = "INSERT INTO `rating` (`RatingID`,`ProductID`,`Comment`,`Rating`,`UserID`) VALUES (DEFAULT ,'$id', '$com', '$grade', '$user')";
+        if ($conn->exec($sql) == TRUE) {
+            echo '<script> alert("Kommentar tillagd!") </script>';
+        }
+        else {
+            echo '<script> alert("Error: Kan inte lägga till data i databasen") </script>';
+        }
+    }*/
 ?>
 <div id="header">
     <div id="navmenu">
@@ -72,19 +86,29 @@ if (isset($_POST['addToCartButton'])) {
         <form action="ProductInfo.php?ID=<?php echo $id; ?>" method="post">
             <input id="addToCartButton" type="submit" value="Lägg till i kundvagn" name="addToCartButton">
         </form>
-        <br><br><br><br>
+        <br><br>
         <?php
-        $prepState = $conn->prepare("SELECT ,  Amount, ProductID FROM rating,users");
+        $prepState = $conn->prepare("SELECT users.UserName, rating.Comment, rating.Rating, rating.RatingID FROM rating,users WHERE rating.ProductID = $id && rating.RatingID = users.UserID");
         $prepState->execute();
         $fetchedData = $prepState->fetchAll();
-
+        foreach ($fetchedData as $row)
+        {
+            echo "<br><br><br>";
+            echo '<b>' . $row['UserName'] . '</b>';
+            echo "<br><br>";
+            echo $row['Comment'];
+            echo "<br><br>";
+            echo "Betyg: " . $row['Rating'] . "/5";
+            echo "<br><br>";
+            echo "_________________________________________________________________________________________________________________";
+        }
         ?>
         <br><br><br><br>
         <h2>Skriv recension:</h2>
         <form id="addComment" method="post" action="ProductInfo.php?ID=<?php echo $id; ?>">
-            <label><textarea rows="6" cols="124" form="addComment" required>Skriv här...</textarea></label><br><br>
+            <label><textarea rows="6" cols="124" form="addComment" name="comment" required>Skriv här...</textarea></label><br><br>
              <label>Ditt betyg:  <input type="number" name="productGrade" required></label> <br><br>
-            <input type="submit" name="Kommentera" value="Recensera">
+            <input type="submit" name="recension" value="Recensera">
         </form>
     </div>
     <div id="right-sidebar">
@@ -93,8 +117,6 @@ if (isset($_POST['addToCartButton'])) {
         ?>
     </div>
 </div>
-
-
 
 </body>
 </html>
