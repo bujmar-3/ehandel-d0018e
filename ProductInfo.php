@@ -64,10 +64,10 @@ else {
 
         </table>
         <br><br>
-        <button id="addToCartButton">Lägg till i kundvagn</button>
+        <button id="addToCartButton" onclick="<?php addToCart($id, $pris, $antal) ?>">Lägg till i kundvagn</button>
         <br><br><br><br>
         <h2>Skriv kommentar:</h2>
-        <form id="addComment" method="post" action="index.php">
+        <form id="addComment" method="post" action="ProductInfo.php?ID=<?php echo "$id"; ?>">
             <label><textarea rows="6" cols="124" form="addComment">Skriv här...</textarea></label>
             <input type="submit" name="Kommentera" value="Kommentera">
         </form>
