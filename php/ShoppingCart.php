@@ -37,6 +37,7 @@ function listCarts(){
     else{
         echo '
         <p>Du måste vara inloggad för att visa denna sida</p>
+        die();
         ';
     }
 }
@@ -151,7 +152,16 @@ function getCartProducts($cartID)
     return $fetchedData;
 }
 
+/**Sätter aktiv kundvagn till cartID**/
 function setActiveCart($cartID, $cartName){
     $_SESSION["activecart"] = $cartID;
     $_SESSION["activecartname"] = $cartName;
+}
+
+/**Lägger till produkt i aktiv kundvagn*/
+function addToCart($productID, $price, $amount){
+    $cartID =$_SESSION['activecart'];
+    $conn = connectDb();
+    $prepState = $conn->prepare("INSERT INTO orders(OrderID, Amount, InstanceID, ProductID, Price) VALUES (DEFAULT, $amount, $cartID, $productID, $price)");
+    $prepState->execute();
 }
