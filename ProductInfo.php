@@ -33,9 +33,10 @@ else {
     echo "Ingen produkt i systemet har detta ID";
     exit();
 }
-if (isset($_POST['addToCartButton']))
-    addToCart($id, $pris, $antal);
+if (isset($_POST['addToCartButton'])) {
+    addToCart($id, $pris, 1);
     echo '<script> alert("Produkten är nu tillagd i din kundvagn")</script>';
+}
 ?>
 <div id="header">
     <div id="navmenu">
@@ -71,12 +72,19 @@ if (isset($_POST['addToCartButton']))
         <form action="ProductInfo.php?ID=<?php echo $id; ?>" method="post">
             <input id="addToCartButton" type="submit" value="Lägg till i kundvagn" name="addToCartButton">
         </form>
-
         <br><br><br><br>
-        <h2>Skriv kommentar:</h2>
+        <?php
+        $prepState = $conn->prepare("SELECT ,  Amount, ProductID FROM rating,users");
+        $prepState->execute();
+        $fetchedData = $prepState->fetchAll();
+
+        ?>
+        <br><br><br><br>
+        <h2>Skriv recension:</h2>
         <form id="addComment" method="post" action="ProductInfo.php?ID=<?php echo $id; ?>">
-            <label><textarea rows="6" cols="124" form="addComment">Skriv här...</textarea></label>
-            <input type="submit" name="Kommentera" value="Kommentera">
+            <label><textarea rows="6" cols="124" form="addComment" required>Skriv här...</textarea></label><br><br>
+             <label>Ditt betyg:  <input type="number" name="productGrade" required></label> <br><br>
+            <input type="submit" name="Kommentera" value="Recensera">
         </form>
     </div>
     <div id="right-sidebar">

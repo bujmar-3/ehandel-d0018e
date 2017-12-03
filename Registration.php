@@ -54,7 +54,7 @@ Function newUser()
     $adress = $_POST["adress"];
     $zip = $_POST["zip"];
     $conn = connectDb();
-    $sql = "INSERT INTO `users` (`UserID`,`UserName`, `Fname`, `Lname`, `Password`, `Adress`, `Zipcode`, `UserType`) VALUES (DEFAULT ,'$user', '$name', '$lname', '$pass', '$adress', '$zip', '1')";
+    $sql = "INSERT INTO `users` (`UserID`,`UserName`, `Fname`, `Lname`, `Password`, `Adress`, `Zipcode`, `UserType`) VALUES (DEFAULT ,'$user', '$name', '$lname', '$pass', '$adress', '$zip', '0')";
 
     if ($conn->exec($sql) == TRUE) {
         echo '<script> alert("Ny användare skapad!") </script>';
