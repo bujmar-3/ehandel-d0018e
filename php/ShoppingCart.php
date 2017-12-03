@@ -180,6 +180,8 @@ function removeCart($cartID){
     $prepState->execute();
     $prepState = $conn->prepare("DELETE FROM order_instance WHERE InstanceID = $cartID");
     $prepState->execute();
+    $_SESSION['activecart'] = NULL;
+    $_SESSION['activecartname'] = NULL;
     header("Refresh:0");
 }
 
@@ -188,7 +190,5 @@ function removeProductCart($productID){
     $conn = connectDb();
     $prepState = $conn->prepare("DELETE FROM orders WHERE InstanceID = $cartID && ProductID = $productID");
     $prepState->execute();
-    $_SESSION['activecart'] = NULL;
-    $_SESSION['activecartname'] = NULL;
     header("Refresh:0");
 }
