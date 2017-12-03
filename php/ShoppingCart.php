@@ -180,8 +180,17 @@ function removeCart($cartID){
     $prepState->execute();
     $prepState = $conn->prepare("DELETE FROM order_instance WHERE InstanceID = $cartID");
     $prepState->execute();
-    $_SESSION['activecart'] = NULL;
-    $_SESSION['activecartname'] = NULL;
+    if($cartID == $_SESSION['activecart']){
+        $fetchedData = getNextCart();
+        if(count($fetchedData) >= 1){
+            $_SESSION["activecart"] = $fetchedData[0]['InstanceID'];
+            $_SESSION["activecartname"]= $fetchedData[0]['Name'];
+        }
+        else{
+            $_SESSION["activecart"] = NULL;
+            $_SESSION["activecartname"]= NULL;
+        }
+    }
     header("Refresh:0");
 }
 
@@ -191,4 +200,13 @@ function removeProductCart($productID){
     $prepState = $conn->prepare("DELETE FROM orders WHERE InstanceID = $cartID && ProductID = $productID");
     $prepState->execute();
     header("Refresh:0");
+}
+
+function getNextCart(){
+    $userid = $_SESSION['userid'];
+    $conn = connectDb();
+    $prepState = $conn->prepare("SELECT InstanceID, Name  FROM order_instance WHERE UserID = $userid LIMIT 1");
+    $prepState->execute();
+    $fetchedData = $prepState->fetchAll();
+    return $fetchedData;
 }

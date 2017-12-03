@@ -31,7 +31,7 @@ function getLoginForm(){
             echo '<a href="Administrator.php">Admin panel</a>';
         }
         echo '
-        </div>;
+        </div>
         ';
     }
 }
