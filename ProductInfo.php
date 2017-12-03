@@ -9,6 +9,7 @@
 </head>
 <body>
 <?php
+    session_start();
 if (isset($_GET['ID'])) {
     $id = $_GET['ID'];
     $conn = connectDb();
@@ -64,7 +65,7 @@ else {
 
         </table>
         <br><br>
-        <button id="addToCartButton" onclick="<?php echo "addToCart($id, $pris, $antal);" ?>">Lägg till i kundvagn</button>
+        <button id="addToCartButton" onclick="<?php addToCart($id, $pris, $antal); ?>">Lägg till i kundvagn</button>
         <br><br><br><br>
         <h2>Skriv kommentar:</h2>
         <form id="addComment" method="post" action="ProductInfo.php?ID=<?php echo $id; ?>">
