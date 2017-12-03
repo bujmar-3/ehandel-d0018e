@@ -25,19 +25,13 @@ function listCarts(){
             createCartTable($cartList);
         }
         else{
-            echo '
-            <p>Du har ingen kundvagn ännu.</p>
-        ';
+            echo '<p>Du har ingen kundvagn ännu.</p>';
         }
         createNewCartButton();
-        echo '
-            </table>
-    ';
+        echo '</table>';
     }
     else{
-        echo '
-        <p>Du måste vara inloggad för att visa denna sida</p>
-        ';
+        echo '<p>Du måste vara inloggad för att visa denna sida</p>';
         die();
     }
 }
@@ -60,10 +54,16 @@ function createCartTable($cartList){
                 <td>'. $row['Name'] .'</td>
                 <td>'. $row['Date'] .'</td>
                 <td>'. $row['Status'] .'</td>
+                <td>
                 <form id="newCart" action="Cart.php" method="post">
                 <input type="hidden" name="activecart" value="'.$row['InstanceID'].'">
                 <input type="hidden" name="activecartname" value="'.$row['Name'].'">
-                <td><input type="submit" value="Välj"></td>
+                <input type="submit" value="Välj">
+                </form>
+                <form id="removeCart" action="Cart.php" method="post">
+                <input type="hidden" name="removecart" value="'.$row['InstanceID'].'">
+                <input type="submit" value="Radera">
+                </td>
                 </form>
             </tr>
         ';
@@ -79,6 +79,7 @@ function createNewCartButton(){
                 <td><input type="text" name="newCartName" required></td>
                 <td>'. $todayDate .'</td>
                 <td><input type="submit" value="Skapa"></td>
+                <td></td>
             </form>
     </tr>
     ';
@@ -97,6 +98,14 @@ function checkCartPost(){
     }
     if(isset($_SESSION['activecart'])){
         showCart($_SESSION['activecart'], $_SESSION['activecartname']);
+    }
+    if(isset($_POST['removeProductID'])){
+        $productID = $_POST['removeProductID'];
+        removeProductCart($productID);
+    }
+    if(isset($_POST['removecart'])){
+        $cartID = $_POST['removecart'];
+        removeCart($cartID);
     }
 }
 
@@ -119,6 +128,7 @@ function showCart($cartId, $cartName)
                 <th>' . $cartName . '</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
     ';
     $cartProductList = getCartProducts($cartId);
@@ -128,6 +138,10 @@ function showCart($cartId, $cartName)
                 <td>' . $row['Name'] . '</td>
                 <td>' . $row['Amount'] . 'st</td>
                 <td>' . $row['Price'] . 'kr</td>
+                <form id="newCart" action="Cart.php" method="post">
+                <input type="hidden" name="removeProductID" value="'.$row['ProductID'].'">
+                <td><input type="submit" value="Radera"></td>
+                </form>
             </tr>
         ';
     }
@@ -137,6 +151,7 @@ function showCart($cartId, $cartName)
                     <td></td>
                     <td></td>
                     <td><input type="submit" value="Checka ut"></td>
+                    <td></td>
                 </tr>
             </form>
         </table>
@@ -146,7 +161,7 @@ function showCart($cartId, $cartName)
 function getCartProducts($cartID)
 {
     $conn = connectDb();
-    $prepState = $conn->prepare("SELECT product.Name, orders.Amount, orders.Price FROM product, orders WHERE orders.instanceID = $cartID && orders.ProductID = product.ProductID");
+    $prepState = $conn->prepare("SELECT product.Name, orders.Amount, orders.Price, orders.ProductID FROM product, orders WHERE orders.instanceID = $cartID && orders.ProductID = product.ProductID");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     return $fetchedData;
@@ -156,4 +171,24 @@ function getCartProducts($cartID)
 function setActiveCart($cartID, $cartName){
     $_SESSION["activecart"] = $cartID;
     $_SESSION["activecartname"] = $cartName;
+}
+
+/**Tar Bort kundvagn med InstanceID @param int $cartID*/
+function removeCart($cartID){
+    $conn = connectDb();
+    $prepState = $conn->prepare("DELETE FROM orders WHERE InstanceID = $cartID");
+    $prepState->execute();
+    $prepState = $conn->prepare("DELETE FROM order_instance WHERE InstanceID = $cartID");
+    $prepState->execute();
+    header("Refresh:0");
+}
+
+function removeProductCart($productID){
+    $cartID = $_SESSION['activecart'];
+    $conn = connectDb();
+    $prepState = $conn->prepare("DELETE FROM orders WHERE InstanceID = $cartID && ProductID = $productID");
+    $prepState->execute();
+    $_SESSION['activecart'] = NULL;
+    $_SESSION['activecartname'] = NULL;
+    header("Refresh:0");
 }
