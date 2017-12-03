@@ -37,8 +37,8 @@ function listCarts(){
     else{
         echo '
         <p>Du måste vara inloggad för att visa denna sida</p>
-        die();
         ';
+        die();
     }
 }
 
