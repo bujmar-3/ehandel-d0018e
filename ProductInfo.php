@@ -33,6 +33,9 @@ else {
     echo "Ingen produkt i systemet har detta ID";
     exit();
 }
+if (isset($_POST['addToCartButton']))
+    addToCart($id, $pris, $antal);
+    echo '<script> alert("Produkten är nu tillagd i din kundvagn")</script>';
 ?>
 <div id="header">
     <div id="navmenu">
@@ -65,7 +68,10 @@ else {
 
         </table>
         <br><br>
-        <button id="addToCartButton" onclick="<?php addToCart($id, $pris, $antal); ?>">Lägg till i kundvagn</button>
+        <form action="ProductInfo.php?ID=<?php echo $id; ?>" method="post">
+            <input id="addToCartButton" type="submit" value="Lägg till i kundvagn" name="addToCartButton">
+        </form>
+
         <br><br><br><br>
         <h2>Skriv kommentar:</h2>
         <form id="addComment" method="post" action="ProductInfo.php?ID=<?php echo $id; ?>">
@@ -84,3 +90,11 @@ else {
 
 </body>
 </html>
+<?php
+function addToCart($productID, $price, $amount){
+    $cartID =$_SESSION['activecart'];
+    $conn = connectDb();
+    $prepState = $conn->prepare("INSERT INTO orders(OrderID, Amount, InstanceID, ProductID, Price) VALUES (DEFAULT, $amount, $cartID, $productID, $price)");
+    $prepState->execute();
+}
+?>
