@@ -26,6 +26,34 @@
     max-width: 60%;
 }
 
+
+
+
+#ProductInfoList {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    min-width: 100%;
+    max-width: 100%;
+}
+#ProductInfoList th{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: left;
+    background-color: #5b8bff;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#ProductInfoList tr:nth-child(even){background-color: #99ccff;}
+
+#ProductInfoList td, th{
+    padding: 8px;
+    width: 33%;
+}
+
+
+
+
 #productList {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -96,4 +124,12 @@
 
 li a:hover {
     background-color: #111;
+}
+
+#addToCartButton {
+    margin-left: auto;
+    margin-right: auto;
+}
+#productList textarea {
+
 }
