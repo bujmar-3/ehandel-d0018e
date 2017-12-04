@@ -5,9 +5,10 @@
     <link rel="stylesheet" type="text/css" href="css/productList.css">
     <title>Test Site</title>
     <?php include 'php/DbConnection.php'; ?>
-    <?php include 'php/ShoppingCart.php'; ?>
+    <?php include 'php/CheckoutForm.php'; ?>
     <?php include 'php/LoginForm.php'; ?>
     <?php include 'php/Navbar.php'; ?>
+    <?php include 'php/ShoppingCart.php'; ?>
 </head>
 <body>
 <?php session_start(); ?>
@@ -20,7 +21,9 @@
 </div>
 <div id="wrapper">
     <div id="content">
-
+        <?php
+        checkoutPost();
+        ?>
     </div>
     <div id="right-sidebar">
         <?php

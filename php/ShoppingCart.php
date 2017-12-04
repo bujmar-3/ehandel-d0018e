@@ -32,7 +32,6 @@ function listCarts(){
     }
     else{
         echo '<p>Du måste vara inloggad för att visa denna sida</p>';
-        die();
     }
 }
 
@@ -40,7 +39,7 @@ function listCarts(){
 function getCartData(){
     $userid = $_SESSION["userid"];
     $conn = connectDb();
-    $prepState = $conn->prepare("SELECT InstanceID, Date, Name, Status FROM order_instance WHERE UserID = $userid");
+    $prepState = $conn->prepare("SELECT InstanceID, Date, Name, Status FROM order_instance WHERE UserID = $userid && Status = 1");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     return $fetchedData;
@@ -53,7 +52,7 @@ function createCartTable($cartList){
             <tr>
                 <td>'. $row['Name'] .'</td>
                 <td>'. $row['Date'] .'</td>
-                <td>'. $row['Status'] .'</td>
+                <td>'.translateStatus($row['Status']).'</td>
                 <td>
                 <form id="newCart" action="Cart.php" method="post">
                 <input type="hidden" name="activecart" value="'.$row['InstanceID'].'">
@@ -63,10 +62,23 @@ function createCartTable($cartList){
                 <form id="removeCart" action="Cart.php" method="post">
                 <input type="hidden" name="removecart" value="'.$row['InstanceID'].'">
                 <input type="submit" value="Radera">
-                </td>
                 </form>
+                    ';
+                }
+    echo '
+                </td>
             </tr>
-        ';
+    ';
+}
+
+function translateStatus($number){
+    switch ($number){
+        case 1:
+            return 'Skapad';
+            break;
+        case 2:
+            return 'Betald';
+            break;
     }
 }
 
@@ -146,14 +158,16 @@ function showCart($cartId, $cartName)
         ';
     }
     echo'
-            <form id="checkOut" action="Cart.php" method="post">
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td><input type="submit" value="Checka ut"></td>
-                    <td></td>
-                </tr>
-            </form>
+        <form id="checkOut" action="Checkout.php" method="post">
+        <tr>
+            <td></td>
+            <td></td>
+            <input type="hidden" name="checkoutName" value="'.$cartName.'">
+            <input type="hidden" name="checkoutID" value="'.$cartId.'">
+            <td><input type="submit" value="Checka ut"></td>
+            <td></td>
+        </tr>
+        </form>
         </table>
     ';
 }
@@ -205,7 +219,7 @@ function removeProductCart($productID){
 function getNextCart(){
     $userid = $_SESSION['userid'];
     $conn = connectDb();
-    $prepState = $conn->prepare("SELECT InstanceID, Name  FROM order_instance WHERE UserID = $userid LIMIT 1");
+    $prepState = $conn->prepare("SELECT InstanceID, Name  FROM order_instance WHERE UserID = $userid && Status = 1 LIMIT 1");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     return $fetchedData;
