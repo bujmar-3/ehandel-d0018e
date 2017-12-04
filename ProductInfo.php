@@ -37,7 +37,7 @@
         addToCart($id, $pris, 1);
         echo '<script> alert("Produkten är nu tillagd i din kundvagn")</script>';
     }
-    /* // Skriv kommentar
+    // Skriv kommentar
     if (isset($_POST['comment']) && (isset($_POST['productGrade']))) {
         $conn = connectDb();
         $com = $_POST['comment'];
@@ -50,7 +50,7 @@
         else {
             echo '<script> alert("Error: Kan inte lägga till data i databasen") </script>';
         }
-    }*/
+    }
 ?>
 <div id="header">
     <div id="navmenu">
@@ -88,7 +88,7 @@
         </form>
         <br><br>
         <?php
-        $prepState = $conn->prepare("SELECT users.UserName, rating.Comment, rating.Rating, rating.RatingID FROM rating,users WHERE rating.ProductID = $id && rating.RatingID = users.UserID");
+        $prepState = $conn->prepare("SELECT users.UserName, rating.Comment, rating.Rating, rating.RatingID FROM rating,users WHERE rating.ProductID = $id && users.UserID = rating.UserID");
         $prepState->execute();
         $fetchedData = $prepState->fetchAll();
         foreach ($fetchedData as $row)
