@@ -63,3 +63,9 @@ function checkLoginPost(){
         return;
     }
 }
+
+/**Loggar ut användare och stänger session*/
+function logout(){
+    $_SESSION = array();
+    session_destroy();
+}

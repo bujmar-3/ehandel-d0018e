@@ -22,7 +22,7 @@
 <div id="wrapper">
     <div id="content">
         <?php
-        checkoutPost();
+        getCheckOutFrom();
         ?>
     </div>
     <div id="right-sidebar">

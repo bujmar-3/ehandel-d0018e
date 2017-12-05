@@ -7,19 +7,18 @@
  */
 
 function checkoutPost(){
-    if(isset($_POST['checkoutName'])){
-        getCheckOutFrom();
-    }
-    elseif (isset($_POST['checkoutID'])){
-        checkOutCart($_POST['checkoutID']);
+    if (isset($_POST['payID'])){
+        checkOutCart($_POST['payID']);
     }
 }
 
 function getCheckOutFrom(){
+    checkoutPost();
     $cartID = $_POST['checkoutID'];
     $cartName = $_POST['checkoutName'];
     $cartList = getCartProducts($cartID);
-    echo '
+    if(count($cartList)>0){
+        echo '
     <table id="productList">
             <tr>
                 <th>' . $cartName . '</th>
@@ -27,19 +26,19 @@ function getCheckOutFrom(){
                 <th></th>
             </tr>
     ';
-    $sum = 0;
-    foreach ($cartList as $row){
-        $sumprice = $row['Amount']*$row['Price'];
-        echo '
+        $sum = 0;
+        foreach ($cartList as $row){
+            $sumprice = $row['Amount']*$row['Price'];
+            echo '
             <tr>
                 <td>' . $row['Name'] . '</td>
                 <td>' . $row['Amount'] . 'st</td>
                 <td>' . $sumprice . 'kr</td>
             </tr>
         ';
-        $sum = $sum + $sumprice;
-    }
-    echo '
+            $sum = $sum + $sumprice;
+        }
+        echo '
     <tr>
         <td></td>
         <td></td>
@@ -48,11 +47,15 @@ function getCheckOutFrom(){
     </table>
     <div>
     <form action="Checkout.php" method="post">
-        <input type="hidden" name="checkoutID" value="'.$cartID.'">
+        <input type="hidden" name="payID" value="'.$cartID.'">
         <input type="submit" value="Betala">
     </form>
     </div>
     ';
+    }
+    else{
+        header("Location: Cart.php");
+    }
 }
 
 

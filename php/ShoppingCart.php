@@ -129,7 +129,7 @@ function createNewCart($name){
     $prepState->execute();
     $lastCartID = $conn->lastInsertId();
     $conn->commit();
-    $_SESSION['activecartname'] = $_POST["newCartName"];
+    $_SESSION['activecartname'] = $name;
     $_SESSION['activecart'] = $lastCartID;
 }
 
@@ -219,6 +219,7 @@ function removeProductCart($productID){
     header("Refresh:0");
 }
 
+/**Sätter */
 function setNextCartActive(){
     $userid = $_SESSION['userid'];
     $conn = connectDb();
