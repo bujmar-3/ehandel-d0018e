@@ -11,7 +11,6 @@ function listCarts(){
     if(checkLoggedIn())
     {
         checkCartPost();
-        $cartList = getCartData();
         echo '
             <table id="productList">
             <tr>
@@ -21,6 +20,7 @@ function listCarts(){
                 <th></th>
             </tr>
         ';
+        $cartList = getCartData();
         if (count($cartList) >= 1){
             createCartTable($cartList);
         }
@@ -49,28 +49,26 @@ function getCartData(){
 function createCartTable($cartList){
     foreach ($cartList as $row){
         echo '
-            <tr>
-                <td>'. $row['Name'] .'</td>
-                <td>'. $row['Date'] .'</td>
-                <td>'.translateStatus($row['Status']).'</td>
-                <td>
-                <form id="newCart" action="Cart.php" method="post">
-                <input type="hidden" name="activecart" value="'.$row['InstanceID'].'">
-                <input type="hidden" name="activecartname" value="'.$row['Name'].'">
-                <input type="submit" value="Välj">
-                </form>
-                <form id="removeCart" action="Cart.php" method="post">
-                <input type="hidden" name="removecart" value="'.$row['InstanceID'].'">
-                <input type="submit" value="Radera">
-                </form>
-                    ';
+                <tr>
+                    <td>'. $row['Name'] .'</td>
+                    <td>'. $row['Date'] .'</td>
+                    <td>'.translateStatus($row['Status']).'</td>
+                    <td>
+                    <form id="newCart" action="Cart.php" method="post">
+                    <input type="hidden" name="activecart" value="'.$row['InstanceID'].'">
+                    <input type="hidden" name="activecartname" value="'.$row['Name'].'">
+                    <input type="submit" value="Välj">
+                    </form>
+                    <form id="removeCart" action="Cart.php" method="post">
+                    <input type="hidden" name="removecart" value="'.$row['InstanceID'].'">
+                    <input type="submit" value="Radera">
+                    </form>
+                </tr>
+        ';
                 }
-    echo '
-                </td>
-            </tr>
-    ';
 }
 
+/**Översätter kundvagnstatus till text*/
 function translateStatus($number){
     switch ($number){
         case 1:
@@ -100,16 +98,10 @@ function createNewCartButton(){
 /**Kollar om GET eller POST anrop mot sidan körts*/
 function checkCartPost(){
     if(isset($_POST["newCartName"])){
-        createNewCart();
-    }
-    if(isset($_GET['ID'])){
-        showCart($_GET['ID'],$_GET['Name']);
+        createNewCart($_POST["newCartName"]);
     }
     if(isset($_POST['activecart'])){
         setActiveCart($_POST['activecart'], $_POST['activecartname']);
-    }
-    if(isset($_SESSION['activecart'])){
-        showCart($_SESSION['activecart'], $_SESSION['activecartname']);
     }
     if(isset($_POST['removeProductID'])){
         $productID = $_POST['removeProductID'];
@@ -122,16 +114,23 @@ function checkCartPost(){
     if(isset($_POST['productAmount'])){
         updateAmount($_SESSION['activecart'],$_POST['productID'],$_POST['productAmount']);
     }
+    if(isset($_SESSION['activecart'])){
+        showCart($_SESSION['activecart'], $_SESSION['activecartname']);
+    }
 }
 
 /**Skapar ny kundvagn med data från POST*/
-function createNewCart(){
+function createNewCart($name){
     $todayDate = date('Y-m-d');
-    $name = $_POST["newCartName"];
     $userID = $_SESSION["userid"];
     $conn = connectDb();
+    $conn->beginTransaction();
     $prepState = $conn->prepare("INSERT INTO order_instance(InstanceID, Date, UserID, Name, Status) VALUES (DEFAULT, '$todayDate', $userID, '$name', 1)");
     $prepState->execute();
+    $lastCartID = $conn->lastInsertId();
+    $conn->commit();
+    $_SESSION['activecartname'] = $_POST["newCartName"];
+    $_SESSION['activecart'] = $lastCartID;
 }
 
 /**Visar innehåll av kundvagn baserat på kundvagnsID*/
@@ -181,6 +180,7 @@ function showCart($cartId, $cartName)
     ';
 }
 
+/**Hämtar alla produkter som finns i kudvagn med cartID och retunerar den i en lista */
 function getCartProducts($cartID)
 {
     $conn = connectDb();
@@ -205,16 +205,8 @@ function removeCart($cartID){
     $prepState = $conn->prepare("DELETE FROM order_instance WHERE InstanceID = $cartID");
     $prepState->execute();
     $conn->commit();
-    if($cartID == $_SESSION['activecart']){
-        $fetchedData = getNextCart();
-        if(count($fetchedData) >= 1){
-            $_SESSION["activecart"] = $fetchedData[0]['InstanceID'];
-            $_SESSION["activecartname"]= $fetchedData[0]['Name'];
-        }
-        else{
-            $_SESSION["activecart"] = NULL;
-            $_SESSION["activecartname"]= NULL;
-        }
+    if($cartID == $_SESSION["activecart"]){
+        setNextCartActive();
     }
     header("Refresh:0");
 }
@@ -227,18 +219,25 @@ function removeProductCart($productID){
     header("Refresh:0");
 }
 
-function getNextCart(){
+function setNextCartActive(){
     $userid = $_SESSION['userid'];
     $conn = connectDb();
     $prepState = $conn->prepare("SELECT InstanceID, Name  FROM order_instance WHERE UserID = $userid && Status = 1 LIMIT 1");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
-    return $fetchedData;
+    if(count($fetchedData) >= 1){
+        $_SESSION["activecart"] = $fetchedData[0]['InstanceID'];
+        $_SESSION["activecartname"]= $fetchedData[0]['Name'];
+    }
+    else{
+        $_SESSION["activecart"] = NULL;
+        $_SESSION["activecartname"]= NULL;
+    }
+    return;
 }
 
 function updateAmount($cartID, $productID, $amount){
     $conn = connectDb();
     $prepState = $conn->prepare("UPDATE orders SET Amount = $amount WHERE InstanceID =$cartID && ProductID = $productID");
     $prepState->execute();
-    header("Refresh:0");
 }

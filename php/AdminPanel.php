@@ -5,19 +5,21 @@
  * Date: 2017-11-25
  * Time: 16:31
  */
+
+/**Skapar admin panel och visar för användaren*/
 function getAdminPanel(){
-    if(isset($_SESSION["usertype"]) && $_SESSION["usertype"]==1) {
+    if(checkLoggedIn() && $_SESSION["usertype"]==1) {
         echo '
-    <form id="adminFrom" action="Administrator.php" method="post">
-    <select name="adminOption">
-        <option value="user">Användare</option>
-        <option value="addproduct">Lägg till produkt</option>
-        <option value="removeproduct">Ta bort produkt</option>
-        <option value="editproduct">Redigera produkt</option>
-    </select>
-    <input type="submit" value="Välj">
-    </form>
-    ';
+        <form id="adminFrom" action="Administrator.php" method="post">
+        <select name="adminOption">
+            <option value="user">Användare</option>
+            <option value="addproduct">Lägg till produkt</option>
+            <option value="removeproduct">Ta bort produkt</option>
+            <option value="editproduct">Redigera produkt</option>
+        </select>
+        <input type="submit" value="Välj">
+        </form>
+        ';
         checkAdminPost();
     }
     else{
@@ -86,7 +88,7 @@ function getUserData(){
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     if(count($fetchedData) == 0){
-        echo 'Kunde inte hitta användare';
+        echo '<p>Kunde inte hitta användare<p>';
     }else{
         $Fname = $fetchedData[0]["Fname"];
         $Lname = $fetchedData[0]["Lname"];
@@ -148,20 +150,6 @@ function saveAddProduct(){
     $conn = connectDb();
     $prepState = $conn->prepare("INSERT INTO product(ProductID, Name, Price, Amount, Description) VALUES (DEFAULT,'$Name',$Price,$Amount,'$Description')");
     $prepState->execute();
-}
-
-/**Kollar om datat redan existerar i databasen - flytta till DbConnections sen*/
-function doesExist($tableName, $columnName, $value){
-    $conn = connectDb();
-    $prepState = $conn->prepare("SELECT $columnName FROM $tableName WHERE $columnName=$value ");
-    $prepState->execute();
-    $fetchedData = $prepState->fetchAll();
-    if (count($fetchedData) >= 1){
-        return true;
-    }
-    else{
-        return false;
-    }
 }
 /**-----------------------Slut på lägga till ny produkt----------------------------*/
 /** Funktioner för att ta bort produkt*/

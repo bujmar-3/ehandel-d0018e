@@ -75,14 +75,8 @@ function checkOutCart($cartID){
         echo 'Kunde inte checka ut kundvagn';
         die();
     }
-    $fetchedData = getNextCart();
-    if(count($fetchedData) >= 1){
-        $_SESSION["activecart"] = $fetchedData[0]['InstanceID'];
-        $_SESSION["activecartname"]= $fetchedData[0]['Name'];
-    }
-    else{
-        $_SESSION["activecart"] = NULL;
-        $_SESSION["activecartname"]= NULL;
+    if($cartID == $_SESSION["activecart"]){
+        setNextCartActive();
     }
     header("Location: Cart.php");
 }
