@@ -119,6 +119,9 @@ function checkCartPost(){
         $cartID = $_POST['removecart'];
         removeCart($cartID);
     }
+    if(isset($_POST['productAmount'])){
+        updateAmount($_SESSION['activecart'],$_POST['productID'],$_POST['productAmount']);
+    }
 }
 
 /**Skapar ny kundvagn med data från POST*/
@@ -145,11 +148,17 @@ function showCart($cartId, $cartName)
     ';
     $cartProductList = getCartProducts($cartId);
     foreach ($cartProductList as $row) {
+        $priceSum = $row['Amount']*$row['Price'];
         echo '
             <tr>
                 <td>' . $row['Name'] . '</td>
-                <td>' . $row['Amount'] . 'st</td>
-                <td>' . $row['Price'] . 'kr</td>
+                <form id="newCart" action="Cart.php" method="post">
+                <td><input type="number" name="productAmount" value="' . $row['Amount'] . '">st
+                <input type="submit" value="uppdatera">
+                </td>
+                <input type="hidden" name="productID" value="'.$row['ProductID'].'">
+                </form>
+                <td>' . $priceSum . 'kr</td>
                 <form id="newCart" action="Cart.php" method="post">
                 <input type="hidden" name="removeProductID" value="'.$row['ProductID'].'">
                 <td><input type="submit" value="Radera"></td>
@@ -190,10 +199,12 @@ function setActiveCart($cartID, $cartName){
 /**Tar Bort kundvagn med InstanceID @param int $cartID*/
 function removeCart($cartID){
     $conn = connectDb();
+    $conn->beginTransaction();
     $prepState = $conn->prepare("DELETE FROM orders WHERE InstanceID = $cartID");
     $prepState->execute();
     $prepState = $conn->prepare("DELETE FROM order_instance WHERE InstanceID = $cartID");
     $prepState->execute();
+    $conn->commit();
     if($cartID == $_SESSION['activecart']){
         $fetchedData = getNextCart();
         if(count($fetchedData) >= 1){
@@ -223,4 +234,11 @@ function getNextCart(){
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     return $fetchedData;
+}
+
+function updateAmount($cartID, $productID, $amount){
+    $conn = connectDb();
+    $prepState = $conn->prepare("UPDATE orders SET Amount = $amount WHERE InstanceID =$cartID && ProductID = $productID");
+    $prepState->execute();
+    header("Refresh:0");
 }

@@ -29,14 +29,15 @@ function getCheckOutFrom(){
     ';
     $sum = 0;
     foreach ($cartList as $row){
+        $sumprice = $row['Amount']*$row['Price'];
         echo '
             <tr>
                 <td>' . $row['Name'] . '</td>
                 <td>' . $row['Amount'] . 'st</td>
-                <td>' . $row['Price'] . 'kr</td>
+                <td>' . $sumprice . 'kr</td>
             </tr>
         ';
-        $sum = $sum + $row['Price'];
+        $sum = $sum + $sumprice;
     }
     echo '
     <tr>
@@ -45,18 +46,43 @@ function getCheckOutFrom(){
         <td><b>Summa: </b>'.$sum.' kr</td>
     </tr>
     </table>
-    <div><form action="Checkout.php" method="post">
+    <div>
+    <form action="Checkout.php" method="post">
         <input type="hidden" name="checkoutID" value="'.$cartID.'">
         <input type="submit" value="Betala">
-    </form></div>
+    </form>
+    </div>
     ';
 }
 
 
 function checkOutCart($cartID){
-    $conn = connectDb();
-    $prepState = $conn->prepare("UPDATE order_instance SET Status = 2 WHERE InstanceID =$cartID");
-    $prepState->execute();
-    getNextCart();
+    try{
+        $conn = connectDb();
+        $conn->beginTransaction();
+        $prepState = $conn->prepare("UPDATE order_instance SET Status = 2 WHERE InstanceID = $cartID");
+        $prepState->execute();
+        $cartProductList = getCartProducts($cartID);
+        foreach ($cartProductList as $row){
+            $productID = $row['ProductID'];
+            $amount = $row['Amount'];
+            $prepState = $conn->prepare("UPDATE product SET Amount = Amount - $amount WHERE ProductID = $productID");
+            $prepState->execute();
+        }
+        $conn->commit();
+    }catch (Exception $e){
+        $conn->rollBack();
+        echo 'Kunde inte checka ut kundvagn';
+        die();
+    }
+    $fetchedData = getNextCart();
+    if(count($fetchedData) >= 1){
+        $_SESSION["activecart"] = $fetchedData[0]['InstanceID'];
+        $_SESSION["activecartname"]= $fetchedData[0]['Name'];
+    }
+    else{
+        $_SESSION["activecart"] = NULL;
+        $_SESSION["activecartname"]= NULL;
+    }
     header("Location: Cart.php");
 }
