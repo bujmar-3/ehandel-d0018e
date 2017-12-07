@@ -6,6 +6,7 @@
     <?php include 'php/Navbar.php'; ?>
     <?php include 'php/LoginForm.php'; ?>
     <?php include 'php/DbConnection.php'; ?>
+    <?php include 'php/ShoppingCart.php'; ?>
 </head>
 <body>
 <?php
@@ -39,12 +40,14 @@
     //Lägg till i kundvagn
     if (isset($_POST['addToCartButton'])) {
         if (checkLoggedIn() == TRUE) {
-            if ( isset($_SESSION['activecart']) && $_SESSION['activecart'] == !NULL) {
+            if ( isset($_SESSION['activecart']))  {
+                //if ()
                 addToCart($id, $pris, 1);
                 echo '<script> alert("Produkten är nu tillagd i din kundvagn")</script>';
             }
             else {
-                echo '<script> alert("Du måste välja en kundvagn att lägga produkten i!")</script>'; 
+                createNewCart("Kundvagn");
+                addToCart($id, $pris, 1);
             }
         }
         else {
@@ -72,6 +75,8 @@
     </div>
 </div>
 <div id="wrapper">
+    <div id="left-sidebar">
+    </div>
     <div id="content">
         <table id="productList">
             <tr>
@@ -100,7 +105,6 @@
             <input id="addToCartButton" type="submit" value="Lägg till i kundvagn" name="addToCartButton">
         </form>
         <br><br><br><br>
-        <h2>Recensioner:</h2>
         <?php
             getComments();
         ?>
@@ -117,9 +121,11 @@
         <?php
             getLoginForm();
         ?>
-    </div>
-</div>
 
+</div>
+</div>
+<div id="footer">
+</div>
 </body>
 </html>
 <?php
@@ -151,17 +157,24 @@ function getComments () {
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     if (count($fetchedData) > 0){
+        echo '<table id="productList">
+            <tr>
+                <th colspan="3">Recensioner:</th>
+            </tr>';
         foreach ($fetchedData as $row)
         {
-            echo "<br><br>";
-            echo '<b>' . $row['UserName'] . '</b>';
-            echo "<br><br>";
-            echo $row['Comment'];
-            echo "<br><br>";
-            echo "Betyg: " . $row['Rating'] . "/5";
-            echo "<br><br>";
-            echo "_________________________________________________________________________________________________________________";
+            echo '<tr>';
+            echo    '<td>';
+            echo        '<b>' . $row['UserName'] . '</b>';
+            echo    "<br><br>";
+            echo    "Betyg: " . $row['Rating'] . "/5";
+            echo        '</td>';
+            echo    '<td>';
+            echo    $row['Comment'];
+            echo    '</td>';
+            echo '</tr>';
         }
+        echo '</table>';
     }
     else {
         echo '<br>';
