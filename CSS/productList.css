@@ -2,23 +2,26 @@ html, body {
     height: 100%;
     background-color: #446aa9;
     width: 100%;
+    margin: 0px;
 }
 /* Huvud klasser för sidan */
 #wrapper{
     min-width: 100%;
     width: 100%;
-    height: 100%;
+    height: 95%;
     min-height: 100%;
 }
 
 #content{
     min-width: 60%;
-    width: 60%;
+    max-width: 60%;
     height: 100%;
     min-height: 100%;
     background-color: #eafcff;
+    box-sizing:border-box;
     margin-right: auto;
     float: left;
+    overflow:auto;
 }
 
 #right-sidebar{
@@ -48,6 +51,7 @@ html, body {
 }
 
 #productList {
+    box-sizing:border-box;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     min-width: 100%;
@@ -82,8 +86,21 @@ html, body {
     min-height: 250px;
     min-width: 100%;
     max-width: 100%;
-    padding-left: 12px;
+    box-sizing:border-box;
     background-color: #5e83af;
+}
+.loginFormButton{
+    background-color: #91c2ee;
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+.loginFormButton:hover{
+    background-color: #6d99c6;
 }
 
 #loginForm input[type=text], input[type=password]{
@@ -95,9 +112,10 @@ html, body {
     box-sizing: border-box;
 }
 
-#loginForm p{
+#loginForm label, form, p, a{
     margin: 0px;
-    padding: 16px;
+    padding-left: 16px;
+    overflow:hidden;
 }
 
 /* Meny CSS*/

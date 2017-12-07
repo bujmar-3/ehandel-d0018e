@@ -13,25 +13,28 @@ function getLoginForm(){
     if(checkLoggedIn()==false){
         echo '
         <form id="loginForm" action="index.php" method="post">
-        Användarnamn: <br><input type="text" name="username"><br>
-        Lösenord: <br><input type="password" name="password"><br>
-        <input type="submit" value="Logga in">
-        <p><a href="Registration.php">Registrera</a></p>
+        <label for="1">Användarnamn:</label><br><input type="text" name="username" id="1"><br>
+        <label for="2">Lösenord:</label><br><input type="password" name="password" id="2"><br>
+        <input type="submit" value="Logga in" class="loginFormButton">
+        <a href="Registration.php">Registrera</a>
         </form>';
     }
     /** om inloggad visa detta */
     else{
         $name = $_SESSION["username"];
         $id = $_SESSION["userid"];
-        echo '<div id="loginForm">
+        echo '
+        <form id="loginForm" action="index.php" method="post">
         <p>Inloggad som:' .$name . '</p>
         <br>
         <p>UserID:' .$id . '</p>';
         if(isset($_SESSION["usertype"]) && $_SESSION["usertype"]==1){
-            echo '<a href="Administrator.php">Admin panel</a>';
+            echo '<a href="Administrator.php" class="loginFormButton">Admin panel</a>';
         }
         echo '
-        </div>
+        <input type="hidden" name="logout" value="true">
+        <input type="submit" class="loginFormButton" value="Logga ut">
+        </form>
         ';
     }
 }
@@ -58,6 +61,9 @@ function checkLoginPost(){
             $_SESSION["userid"]=$fetchedData[0]["UserID"];
             $_SESSION["usertype"]=$fetchedData[0]["UserType"];
         }
+    }
+    if(isset($_POST["logout"])){
+        logout();
     }
     else{
         return;
