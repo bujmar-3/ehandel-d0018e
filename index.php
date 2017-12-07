@@ -19,6 +19,8 @@
     </div>
 </div>
 <div id="wrapper">
+    <div id="left-sidebar">
+    </div>
     <div id="content">
         <?php
         ListProducts(getProducts());
@@ -30,5 +32,6 @@
         ?>
     </div>
 </div>
+<div id="footer"></div>
 </body>
 </html>
