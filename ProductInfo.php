@@ -169,7 +169,7 @@ function getComments () {
             echo    "<br><br>";
             echo    "Betyg: " . $row['Rating'] . "/5";
             echo        '</td>';
-            echo    '<td>';
+            echo    '<td colspan="2">';
             echo    $row['Comment'];
             echo    '</td>';
             echo '</tr>';
