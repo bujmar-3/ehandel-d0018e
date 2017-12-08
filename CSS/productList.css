@@ -21,7 +21,8 @@ html, body {
     box-sizing:border-box;
     margin-right: auto;
     float: left;
-    overflow:auto;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
 #right-sidebar{
@@ -56,6 +57,8 @@ html, body {
     border-collapse: collapse;
     min-width: 100%;
     max-width: 100%;
+    table-layout:fixed;
+    width: 100%;
 }
 
 /* Här under finns CSS för specefika funktioner på sidan*/
@@ -80,6 +83,7 @@ html, body {
     padding: 8px;
     min-width: 33%;
     width: auto;
+    word-wrap: break-word;
 }
 /* Loginpanel CSS*/
 #loginForm{
