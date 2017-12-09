@@ -123,12 +123,18 @@ function checkCartPost(){
 function createNewCart($name){
     $todayDate = date('Y-m-d');
     $userID = $_SESSION["userid"];
-    $conn = connectDb();
-    $conn->beginTransaction();
-    $prepState = $conn->prepare("INSERT INTO order_instance(InstanceID, Date, UserID, Name, Status) VALUES (DEFAULT, '$todayDate', $userID, '$name', 1)");
-    $prepState->execute();
-    $lastCartID = $conn->lastInsertId();
-    $conn->commit();
+    try {
+        $conn = connectDb();
+        $conn->beginTransaction();
+        $prepState = $conn->prepare("INSERT INTO order_instance(InstanceID, Date, UserID, Name, Status) VALUES (DEFAULT, '$todayDate', $userID, '$name', 1)");
+        $prepState->execute();
+        $lastCartID = $conn->lastInsertId();
+        $conn->commit();
+    }catch (Exception $e){
+        $conn->rollBack();
+        echo 'Kunde inte skapa kundvagn';
+        die();
+    }
     $_SESSION['activecartname'] = $name;
     $_SESSION['activecart'] = $lastCartID;
 }
