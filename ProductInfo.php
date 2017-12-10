@@ -199,8 +199,20 @@ function writeComment () {
 
 function addToCart($productID, $price, $amount){
     $cartID =$_SESSION['activecart'];
-    $conn = connectDb();
-    $prepState = $conn->prepare("INSERT INTO orders(OrderID, Amount, InstanceID, ProductID, Price) VALUES (DEFAULT, $amount, $cartID, $productID, $price)");
-    $prepState->execute();
+    $activeCartData = getCartProducts($cartID);
+    $foundproduct = false;
+    foreach ($activeCartData as $row) {
+        if ($row['ProductID'] == $productID && $row['Price'] == $price) {
+            $conn = connectDb();
+            $prepState = $conn->prepare("UPDATE orders SET Amount = Amount + 1 WHERE InstanceID =$cartID && ProductID = $productID && Price = $price");
+            $prepState->execute();
+            $foundproduct = true;
+        }
+    }
+    if($foundproduct == false){
+        $conn = connectDb();
+        $prepState = $conn->prepare("INSERT INTO orders(OrderID, Amount, InstanceID, ProductID, Price) VALUES (DEFAULT, $amount, $cartID, $productID, $price)");
+        $prepState->execute();
+    }
 }
 ?>

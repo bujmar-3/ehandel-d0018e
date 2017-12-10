@@ -113,7 +113,7 @@ function checkCartPost(){
         removeCart($cartID);
     }
     if(isset($_POST['productAmount'])){
-        updateAmount($_SESSION['activecart'],$_POST['productID'],$_POST['productAmount']);
+        updateAmount($_SESSION['activecart'],$_POST['productID'],$_POST['productAmount'],$_POST['productUpdatePrice']);
     }
     if(isset($_SESSION['activecart'])){
         showCart($_SESSION['activecart'], $_SESSION['activecartname']);
@@ -159,6 +159,7 @@ function showCart($cartId, $cartName)
             <tr>
                 <td>' . $row['Name'] . '</td>
                 <form id="newCart" action="Cart.php" method="post">
+                <input type="hidden" name="productUpdatePrice" value="'.$row['Price'].'">
                 <td><input type="number" name="productAmount" value="' . $row['Amount'] . '">st
                 <input type="submit" value="uppdatera">
                 </td>
@@ -245,8 +246,8 @@ function setNextCartActive(){
     return;
 }
 
-function updateAmount($cartID, $productID, $amount){
+function updateAmount($cartID, $productID, $amount, $price){
     $conn = connectDb();
-    $prepState = $conn->prepare("UPDATE orders SET Amount = $amount WHERE InstanceID =$cartID && ProductID = $productID");
+    $prepState = $conn->prepare("UPDATE orders SET Amount = $amount WHERE InstanceID =$cartID && ProductID = $productID && Price = $price");
     $prepState->execute();
 }
