@@ -124,15 +124,16 @@ function getOutcheckedCarts ($data) {
                 <th colspan="3">' . $_POST['activecartname'] . '  -  ID=' . $_POST['activecart'] . '</th>
             </tr>
             <tr>
-                <td>Produkt:</td>
-                <td>Antal:</td>
-                <td>Summa:</td>
+                <td><b>Produkt:</b></td>
+                <td><b>Antal:</b></td>
+                <td><b>Pris:</b></td>
             </tr>
             ';
 
         foreach ($cartDetails as $row) {
             $priceSum = $row['Amount']*$row['Price'];
             static $totSum = 0;
+            $totSum = $totSum+$priceSum;
             echo '
             <tr>
                 <td>' . $row['Name'] . '</td>
@@ -141,8 +142,11 @@ function getOutcheckedCarts ($data) {
             </tr>
         ';
         }
+        echo'<tr>
+                <td colspan="2"><b> Totalt belopp: </b></td>
+                <td><b>' . $totSum . '</b></td>           
+             </tr>';
         echo '</table>';
-        //showCart($_POST['activecart'], $_POST['activecartname']);
     }
 }
     else {
