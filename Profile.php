@@ -9,6 +9,7 @@ session_start();
     <?php include 'php/Navbar.php'; ?>
     <?php include 'php/LoginForm.php'; ?>
     <?php include 'php/DbConnection.php'; ?>
+    <?php include 'php/ShoppingCart.php'; ?>
 </head>
 <body>
 <div id="header">
@@ -50,7 +51,7 @@ if (checkLoggedIn()) {
                 <td>';
                     if ($_SESSION['usertype']  == 0)
                     {
-                     echo "Användare";
+                        echo "Användare";
                     }
                     else
                     {
@@ -92,7 +93,7 @@ echo '
 
 function getOutcheckedCarts ($data) {
     $conn = connectDb();
-    $prepState = $conn->prepare("SELECT order_instance.Name, order_instance.Date  FROM order_instance WHERE order_instance.Status = '2' &&order_instance.UserID = $data ");
+    $prepState = $conn->prepare("SELECT order_instance.Name, order_instance.Date, order_instance.InstanceID  FROM order_instance WHERE order_instance.Status = '2' &&order_instance.UserID = $data ");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     if (count($fetchedData) > 0){
@@ -105,10 +106,44 @@ function getOutcheckedCarts ($data) {
         echo '<tr>';
         echo    '<td><b>' . $row['Name'] . '</b></td>';
         echo    '<td>' . $row['Date'] . '</td>';
-        echo    '<td><form method="post"><input type="submit" name="showOutcheckedCartButton" value="Visa"></form></td>';
+        echo    '<td><form method="post">
+                <input type="hidden"  name="activecart" value="'.$row['InstanceID'].'">
+                <input type="hidden" name="activecartname" value="'.$row['Name'].'">
+                <input type="submit" name="showOutcheckedCartButton" value="Visa">
+                </form></td>';
         echo '</tr>';
     }
     echo '</table>';
+    echo '<br><br><br><br>';
+
+
+    if (isset($_POST['showOutcheckedCartButton'])) {
+        $cartDetails = getCartProducts($_POST['activecart']);
+        echo '<table id="productList">
+            <tr>
+                <th colspan="3">' . $_POST['activecartname'] . '  -  ID=' . $_POST['activecart'] . '</th>
+            </tr>
+            <tr>
+                <td>Produkt:</td>
+                <td>Antal:</td>
+                <td>Summa:</td>
+            </tr>
+            ';
+
+        foreach ($cartDetails as $row) {
+            $priceSum = $row['Amount']*$row['Price'];
+            static $totSum = 0;
+            echo '
+            <tr>
+                <td>' . $row['Name'] . '</td>
+                <td>' . $row['Amount'] . '</td>
+                <td>' . $priceSum . 'kr</td>
+            </tr>
+        ';
+        }
+        echo '</table>';
+        //showCart($_POST['activecart'], $_POST['activecartname']);
+    }
 }
     else {
         echo '<br>';

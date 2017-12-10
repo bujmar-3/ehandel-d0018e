@@ -61,7 +61,7 @@
             writeComment();
         }
         else {
-            echo '<script> alert("Gör inte en arvid, logga in först!") </script>';
+            echo '<script> alert("Du måste vara inloggad för att kunna skriva en recension!") </script>';
         }
     }
 
