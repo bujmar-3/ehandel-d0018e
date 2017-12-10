@@ -106,11 +106,13 @@ function getOutcheckedCarts ($data) {
         echo '<tr>';
         echo    '<td><b>' . $row['Name'] . '</b></td>';
         echo    '<td>' . $row['Date'] . '</td>';
-        echo    '<td><form method="post">
-                <input type="hidden"  name="activecart" value="'.$row['InstanceID'].'">
-                <input type="hidden" name="activecartname" value="'.$row['Name'].'">
-                <input type="submit" name="showOutcheckedCartButton" value="Visa">
-                </form></td>';
+        echo    '<td>
+                    <form method="post">
+                        <input type="hidden"  name="activecart" value="'.$row['InstanceID'].'">
+                        <input type="hidden" name="activecartname" value="'.$row['Name'].'">
+                        <input type="submit" name="showOutcheckedCartButton" value="Visa">
+                    </form>
+                </td>';
         echo '</tr>';
     }
     echo '</table>';
@@ -121,7 +123,7 @@ function getOutcheckedCarts ($data) {
         $cartDetails = getCartProducts($_POST['activecart']);
         echo '<table id="productList">
             <tr>
-                <th colspan="3">' . $_POST['activecartname'] . '  -  ID=' . $_POST['activecart'] . '</th>
+                <th colspan="3">' . $_POST['activecartname'] . '  -  ID: ' . $_POST['activecart'] . '</th>
             </tr>
             <tr>
                 <td><b>Produkt:</b></td>
