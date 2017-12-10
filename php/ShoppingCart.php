@@ -105,7 +105,8 @@ function checkCartPost(){
     }
     if(isset($_POST['removeProductID'])){
         $productID = $_POST['removeProductID'];
-        removeProductCart($productID);
+        $price = $_POST['removeProductPrice'];
+        removeProductCart($productID, $price);
     }
     if(isset($_POST['removecart'])){
         $cartID = $_POST['removecart'];
@@ -165,6 +166,7 @@ function showCart($cartId, $cartName)
                 </form>
                 <td>' . $priceSum . 'kr</td>
                 <form id="newCart" action="Cart.php" method="post">
+                <input type="hidden" name="removeProductPrice" value="'.$row['Price'].'">
                 <input type="hidden" name="removeProductID" value="'.$row['ProductID'].'">
                 <td><input type="submit" value="Radera"></td>
                 </form>
@@ -217,10 +219,10 @@ function removeCart($cartID){
     header("Refresh:0");
 }
 
-function removeProductCart($productID){
+function removeProductCart($productID, $price){
     $cartID = $_SESSION['activecart'];
     $conn = connectDb();
-    $prepState = $conn->prepare("DELETE FROM orders WHERE InstanceID = $cartID && ProductID = $productID");
+    $prepState = $conn->prepare("DELETE FROM orders WHERE InstanceID = $cartID && ProductID = $productID && Price = $price");
     $prepState->execute();
     header("Refresh:0");
 }
