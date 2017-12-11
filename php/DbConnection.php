@@ -34,7 +34,7 @@ function connectDb(){
 /** Returnerar variabel $fechedData som inehåller namn, pris och antal från tabellen product från databasen */
 function getProducts(){
     $conn = connectDb();
-    $prepState = $conn->prepare("SELECT Name, Price, Amount, ProductID FROM product");
+    $prepState = $conn->prepare("SELECT Name, Price, Amount, ProductID FROM product WHERE Hidden = 0");
     $prepState->execute();
     $fetchedData = $prepState->fetchAll();
     return $fetchedData;

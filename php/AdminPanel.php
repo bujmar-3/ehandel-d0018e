@@ -137,6 +137,11 @@ function addProduct(){
             Pris: <input type="number" name="addProductPrice" required><br>
             Antal: <input type="number" name="addProductAmount" required><br>
             Produkt Beskrivning:<br><textarea rows="12" cols="80" name="addProductDescription" form="addProduct">Beskrivning..</textarea><br>
+            Visa i produktlista:
+            <select name="addProductShow">
+            <option value="0">Ja</option>
+            <option value="1">Nej</option><br>
+            </select>
             <input type="submit" value="Lägg till produkt">
           </form>
     ';
@@ -146,9 +151,10 @@ function saveAddProduct(){
     $Name = $_POST["addProductName"];
     $Price = $_POST["addProductPrice"];
     $Amount = $_POST["addProductAmount"];
+    $hidden = $_POST["addProductShow"];
     $Description = $_POST["addProductDescription"];
     $conn = connectDb();
-    $prepState = $conn->prepare("INSERT INTO product(ProductID, Name, Price, Amount, Description) VALUES (DEFAULT,'$Name',$Price,$Amount,'$Description')");
+    $prepState = $conn->prepare("INSERT INTO product(ProductID, Name, Price, Amount, Description, Hidden) VALUES (DEFAULT,'$Name',$Price,$Amount,'$Description',$hidden)");
     $prepState->execute();
 }
 /**-----------------------Slut på lägga till ny produkt----------------------------*/
@@ -165,11 +171,15 @@ function removeProduct(){
 }
 
 function saveRemoveProduct(){
-    $Name = $_POST["removeProductName"];
-    $conn = connectDb();
-    $prepState = $conn->prepare("DELETE FROM product WHERE Name='$Name'");
-    $prepState->execute();
-    echo 'produkt borttagen';
+    try {
+        $Name = $_POST["removeProductName"];
+        $conn = connectDb();
+        $prepState = $conn->prepare("DELETE FROM product WHERE Name='$Name'");
+        $prepState->execute();
+        echo 'produkt borttagen';
+    }catch (Exception $e){
+        echo'<p>Produkten ligger redan i någons kundvagn, kan inte ta bort produkt.</p>';
+    }
 }
 /**-----------------------Slut på ta bort produkt----------------------------*/
 /** Funktioner för att redigera produkt*/
@@ -207,6 +217,10 @@ function getProductData(){
                 Produktnamn: <input type="text" name="editProductName" value="'.$Name.'"><br>
                 Pris: <input type="text" name="editProductPrice" value="'.$Price.'"><br>
                 Antal: <input type="text" name="editProductAmount" value="'.$Amount.'"><br>
+                Visa i produktlista:<select name="editProductShow">
+                <option value="0">Ja</option>
+                <option value="1">Nej</option><br>
+                </select>
                 Produkt Beskrivning:<br><textarea rows="12" cols="80" name="editProductDescription" form="addProduct">'.$Description.'</textarea><br>
                 <input type="submit" value="Lägg till produkt">
             </form>
@@ -220,8 +234,9 @@ function saveProductData(){
     $Amount = $_POST["editProductAmount"];
     $Description= $_POST["editProductDescription"];
     $ProductID= $_POST["editproductID"];
+    $Hidden= $_POST["editProductShow"];
     $conn = connectDb();
-    $prepState = $conn->prepare("UPDATE product SET Name='$Name',Price=$Price,Amount=$Amount,Description='$Description' WHERE ProductID=$ProductID ");
+    $prepState = $conn->prepare("UPDATE product SET Name='$Name',Price=$Price,Amount=$Amount,Description='$Description', Hidden= $Hidden WHERE ProductID=$ProductID ");
     $prepState->execute();
     echo '
     <p>Produkt uppdaterad!</p>
