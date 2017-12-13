@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/productList.css">
+    <link rel="stylesheet" type="text/css" href="css/Layout.css">
     <title>Test Site</title>
     <?php include 'php/DbConnection.php'; ?>
     <?php include 'php/CheckoutForm.php'; ?>

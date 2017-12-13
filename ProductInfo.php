@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="sv" xmlns="http://www.w3.org/1999/html">
 <head>
-    <link rel="stylesheet" type="text/css" href="css/productList.css">
+    <link rel="stylesheet" type="text/css" href="css/Layout.css">
     <meta charset="UTF-8">
     <?php include 'php/Navbar.php'; ?>
     <?php include 'php/LoginForm.php'; ?>
